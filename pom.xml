@@ -51,22 +51,9 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-		 <version>6.2.4</version>
-		 <type>jar</type>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 
 
