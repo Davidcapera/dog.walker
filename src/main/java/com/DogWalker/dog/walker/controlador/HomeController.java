@@ -74,7 +74,7 @@ public class HomeController {
         usuarioService.registrarUsuario(usuario, rol);
         return "redirect:/login?registroExitoso";
     }
-
+    //vista administrador
     @GetMapping("/homeAdmin")
     public String viewPrincipalAdmin(Model model, HttpSession session) throws Exception {
         // Verificar si el usuario ha iniciado sesión
