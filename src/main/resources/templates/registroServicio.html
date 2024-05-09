@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>registro servicio</title>
+</head>
+<body>
+<h1>Registro De Servicio</h1>
+<form th:action="@{/registrarServicio}" method="post" th:object="${servicio}">
+    <label for="servicio">Nombre:</label>
+    <input type="text" id="servicio" name="servicio" required><br><br>
+
+    <label for="descripcion">Descripcion:</label>
+    <input type="text" id="descripcion" name="descripcion" required><br><br>
+
+    <button type="submit">Registrar</button>
+    <button type="button" onclick="window.location.href='/homeadmin';">Cancelar</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PRINCIPAL USUARIO</title>
+</head>
+<body>
+<h1>PRINCIPAL USUARIO!</h1>
+<p th:text="${message}"></p>
+
+
+
+<!-- Enlace para cerrar sesión -->
+<a th:href="@{/logout}">Cerrar Sesión</a>
+<a th:href="@{/registrarMascota}">registrar mascota</a>
+<a th:href="@{perfilUsuario}">perfil </a>
+<h2>Mis Mascotas</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Raza</th>
+        <th>Peso</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterar sobre la lista de mascotas -->
+    <tr th:each="mascota : ${mascotas}">
+        <td th:text="${mascota.nombre}"></td>
+        <td th:text="${mascota.raza}"></td>
+        <td th:text="${mascota.peso}"></td>
+        <td th:text="${mascota.descripcion}"></td>
+        <td>
+            <!-- Botón para agregar -->
+
+            <!-- Botón para eliminar -->
+            <form th:action="@{/eliminarMascota}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este servicio?');">
+                <input type="hidden" name="mascotaId" th:value="${mascota.id_mascota}">
+                <button type="submit">Eliminar</button>
+            </form>
+            <form th:action="@{/editarMascota}" method="get">
+                <input type="hidden" name="mascotaId" th:value="${mascota.id_mascota}">
+                <button type="submit">Actualizar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+
+
+
+</body>
+</html>

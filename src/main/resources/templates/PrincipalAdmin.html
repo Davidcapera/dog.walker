@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PRINCIPAL ADMIN</title>
+</head>
+<body>
+<h1><span>Bienvenido</span></h1>
+
+<table border="1">
+    <caption><h1>Entrenadores</h1></caption>
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Teléfono</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterar sobre la lista de entrenadores -->
+    <tr th:each="entrenador : ${entrenadores}">
+        <td th:text="${entrenador.nombre}"></td>
+        <td th:text="${entrenador.correo}"></td>
+        <td th:text="${entrenador.telefono}"></td>
+        <td>
+            <!-- Botón para editar -->
+            <form th:action="@{/editarEntrenador}" method="get">
+                <input type="hidden" id="id" name="id" th:value="${entrenador.id_usuario}">
+                <button type="submit">Editar</button>
+            </form>
+            <form th:action="@{/eliminarEntrenador}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este entrenador?');">
+                <input type="hidden" id="id" name="id" th:value="${entrenador.id_usuario}">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Botón para agregar entrenador -->
+<form th:action="@{/registroEntrenador}" method="get">
+    <button type="submit">Agregar Entrenador</button>
+</form>
+
+<table border="1">
+    <caption><h1>Servicios de la Plataforma</h1></caption>
+    <thead>
+    <tr>
+        <th>Servicio</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterar sobre la lista de servicios -->
+    <tr th:each="servicio : ${servicios}">
+        <td th:text="${servicio.servicio}"></td>
+        <td th:text="${servicio.descripcion}"></td>
+        <td>
+            <!-- Botón para editar -->
+            <form th:action="@{/editarServicio}" method="get">
+                <input type="hidden" id="id" name="servicioId" th:value="${servicio.id_servicio}">
+                <button type="submit">Editar</button>
+            </form>
+            <!-- Botón para eliminar -->
+            <form th:action="@{/eliminarServicio}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este servicio?');">
+                <input type="hidden" id="id" name="servicioId" th:value="${servicio.id_servicio}">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Botón para agregar servicio -->
+<form th:action="@{/registrarServicio}" method="get">
+    <button type="submit">Agregar Servicio</button>
+</form>
+
+
+<a th:href="@{/logout}">Cerrar Sesión</a>
+<a th:href="@{perfilUsuario}">Perfil</a>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserva de Servicios</title>
+</head>
+<body>
+
+<h2>Realizar Reserva</h2>
+
+<form action="#" th:action="@{/realizarReserva}" method="post">
+    <label for="mascota">Selecciona tu mascota:</label><br>
+    <select id="mascota" name="mascota" required>
+        <option th:each="mascota : ${mascotas}" th:value="${mascota.id_mascota}" th:text="${mascota.nombre + ' - ' + mascota.raza}"></option>
+    </select><br><br>
+
+    <label for="servicio">Selecciona el servicio:</label><br>
+    <select id="servicio" name="servicio" required>
+        <option th:each="servicio : ${servicios}" th:value="${servicio.id_servicio}" th:text="${servicio.servicio}"></option>
+    </select><br><br>
+
+    <label for="fecha">Selecciona la fecha de la reserva:</label><br>
+    <input type="date" id="fecha" name="fecha" required><br><br>
+
+    <button type="submit">Realizar Reserva</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil de Usuario</title>
+</head>
+<body>
+<h1>Perfil de Usuario</h1>
+
+<!-- Mostrar los detalles del usuario -->
+<p><strong>Nombre:</strong> <span th:text="${usuario.nombre}"></span></p>
+<p><strong>Correo electrónico:</strong> <span th:text="${usuario.correo}"></span></p>
+<p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
+
+<form th:action="@{/editarPerfilUsuario}" method="get">
+    <input type="hidden" id="id" name="id" th:value="${usuario.id_usuario}">
+    <button type="submit">Editar Cuenta</button>
+</form>
+<!-- Botón para eliminar perfil -->
+<form th:action="@{/eliminarPerfilUsuario}" method="post"onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu perfi?');">
+    <input type="hidden" id="id" name="id" th:value="${usuario.id_usuario}">
+    <button type="submit">Eliminar Cuenta</button>
+</form>
+
+<!-- Redirigir según el rol del usuario -->
+<a th:if="${usuario.rol.rol == 'usuario'}" th:href="@{/homeUsuario}">Inicio</a>
+<a th:if="${usuario.rol.rol == 'entrenador'}" th:href="@{/homeEntrenador}">Inicio</a>
+<a th:if="${usuario.rol.rol == 'admin'}" th:href="@{/homeAdmin}">Inicio</a>
+
+</body>
+</html>

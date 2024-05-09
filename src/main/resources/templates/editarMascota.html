@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Mascota</title>
+</head>
+<body>
+
+<h2>Editar Mascota</h2>
+
+<form th:action="@{/editarMascota}" method="post" th:object="${mascota}">
+    <input type="hidden" th:name="id_mascota" th:value="${mascota.id_mascota}" />
+    <label for="nombre">Nombre:</label><br>
+    <input type="text" id="nombre" name="nombre" th:value="${mascota.nombre}" readonly><br><br>
+
+    <label for="raza">Raza:</label><br>
+    <input type="text" id="raza" name="raza" th:value="${mascota.raza}" readonly><br><br>
+
+    <label for="peso">Peso:</label><br>
+    <input type="number" id="peso" name="peso" th:field="*{peso}" required><br><br>
+
+    <label for="descripcion">Descripción:</label><br>
+    <textarea id="descripcion" name="descripcion" th:field="*{descripcion}" required></textarea><br><br>
+
+    <button type="submit">Actualizar</button>
+    <button type="button" onclick="window.location.href='/homeUsuario';">Cancelar</button>
+</form>
+
+</body>
+</html>
