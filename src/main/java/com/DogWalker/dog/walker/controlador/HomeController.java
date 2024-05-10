@@ -5,6 +5,7 @@ import com.DogWalker.dog.walker.modelo.dtos.UsuarioDto;
 import com.DogWalker.dog.walker.modelo.entidades.Mascota;
 import com.DogWalker.dog.walker.modelo.entidades.Servicio;
 import com.DogWalker.dog.walker.modelo.entidades.Usuario;
+import com.DogWalker.dog.walker.servicio.EmailService;
 import com.DogWalker.dog.walker.servicio.MascotaService;
 import com.DogWalker.dog.walker.servicio.ServicioService;
 import com.DogWalker.dog.walker.servicio.UsuarioService;
@@ -14,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @Controller
 public class HomeController {
@@ -97,33 +96,39 @@ public class HomeController {
     public String viewLogin(){return "login";}
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("usuario") UsuarioDto usuario, HttpSession session, Model model) throws Exception {
+    public String login(@ModelAttribute("usuario") UsuarioDto usuario, HttpSession session, Model model) {
         // Obtener correo y contraseña del usuario
         String correo = usuario.getCorreo();
         String contrasena = usuario.getContrasena();
 
-        // Validar las credenciales
-        Usuario usuarioAutenticado = usuarioService.autenticarUsuario(correo, contrasena);
+        try {
+            // Validar las credenciales
+            Usuario usuarioAutenticado = usuarioService.autenticarUsuario(correo, contrasena);
 
-        if (usuarioAutenticado != null) {
-            // Las credenciales son válidas, establecer sesión
-            session.setAttribute("usuario", usuarioAutenticado);
-            session.setAttribute("rol", usuarioAutenticado.getRol().getRol());
-            // Redirigir según el rol
-            switch (usuarioAutenticado.getRol().getRol()) {
-                case "usuario":
-                    return "redirect:/homeUsuario"; // Redirigir al home de usuario
-                case "entrenador":
-                    return "redirect:/homeEntrenador"; // Redirigir al home de entrenador
-                case "admin":
-                    return "redirect:/homeAdmin"; // Redirigir al home de administrador
-                default:
-                    return "redirect:/login?error"; // Rol desconocido
+            if (usuarioAutenticado != null) {
+                // Las credenciales son válidas, establecer sesión
+                session.setAttribute("usuario", usuarioAutenticado);
+                session.setAttribute("rol", usuarioAutenticado.getRol().getRol());
+                // Redirigir según el rol
+                switch (usuarioAutenticado.getRol().getRol()) {
+                    case "usuario":
+                        return "redirect:/homeUsuario"; // Redirigir al home de usuario
+                    case "entrenador":
+                        return "redirect:/homeEntrenador"; // Redirigir al home de entrenador
+                    case "admin":
+                        return "redirect:/homeAdmin"; // Redirigir al home de administrador
+                    default:
+                        return "redirect:/login?error=unknown"; // Rol desconocido
+                }
+            } else {
+                // Las credenciales son incorrectas
+                model.addAttribute("error", "Credenciales incorrectas. Por favor, verifica tu correo y contraseña.");
+                return "login"; // Devolver al usuario a la vista de login con el mensaje de error
             }
-        } else {
-            model.addAttribute("error", "Credenciales incorrectas");
-            return "login";
-
+        } catch (Exception e) {
+            // Manejar cualquier excepción que pueda surgir durante la autenticación
+            model.addAttribute("error", "Credenciales incorrectas. Por favor, verifica tu correo y contraseña..");
+            return "login"; // Devolver al usuario a la vista de login con el mensaje de error
         }
     }
 
@@ -354,6 +359,26 @@ public class HomeController {
         servicioService.actualizarServicio(servicioDto);
         return "redirect:/homeAdmin";
     }
+
+
+    @Autowired
+    private EmailService emailService;
+
+    @PostMapping("/recuperarcontrasena")
+    public String recuperarContrasena(@RequestParam("correo") String correo, Model model) {
+        try {
+            String contrasena = usuarioService.obtenerContrasenaPorCorreo(correo);
+
+            // Enviar correo electrónico con la contraseña
+            emailService.sendHtmlEmail(correo, "Recuperación de Contraseña - DogWalker", contrasena);
+
+            model.addAttribute("exitoRecuperacion", true);
+        } catch (Exception e) {
+            model.addAttribute("errorRecuperacion", true);
+        }
+        return "redirect:/login?recuperacionExitosa";
+    }
+
 
 }
 

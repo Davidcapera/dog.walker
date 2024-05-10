@@ -21,8 +21,25 @@
         <input type="password" id="contrasena" name="contrasena" required><br><br>
 
         <button type="submit">Iniciar sesión</button>
-        <button type="button" onclick="window.location.href='/';">Cancelar</button>
+        <button type="button" onclick="window.location.href='/registro';">Registro</button>
     </form>
+
+    <button id="mostrarFormularioRecuperacion" onclick="mostrarFormulario()">¿Olvidaste tu contraseña?</button>
+
+    <!-- Formulario para solicitar recuperación de contraseña (oculto inicialmente) -->
+    <form id="formularioRecuperacion" th:action="@{/recuperarcontrasena}" method="post" style="display: none;">
+        <label for="correo">Ingresa tu correo electrónico para recuperar tu contraseña:</label><br>
+        <input type="email" id="correo" name="correo" required><br><br>
+        <button type="submit">Recuperar contraseña</button>
+    </form>
+</div>
+
+<script>
+    function mostrarFormulario() {
+        // Mostrar el formulario de recuperación de contraseña
+        document.getElementById("formularioRecuperacion").style.display = "block";
+    }
+</script>
 </div>
 
 <div th:if="${param.registroExitoso}">

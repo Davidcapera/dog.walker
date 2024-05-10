@@ -115,5 +115,14 @@ public class UsuarioService {
         return usuarioRepository.findByRolId(rolId);
     }
 
+    public String obtenerContrasenaPorCorreo(String correo) {
+        Usuario usuario = usuarioRepository.findByCorreo(correo);
+        if (usuario != null) {
+            return usuario.getContrasena();
+        } else {
+            throw new IllegalArgumentException("No se encontró ningún usuario con el correo electrónico proporcionado.");
+        }
+    }
+
 }
 
