@@ -67,7 +67,6 @@ public class UsuarioService {
         }
     }
 
-
     public UsuarioDto obtenerUsuarioPorId(int idUsuario) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
         if (usuarioOptional.isPresent()) {
@@ -109,8 +108,6 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
-
-
     public List<Usuario> obtenerEntrenadores(int rolId) {
         return usuarioRepository.findByRolId(rolId);
     }
@@ -122,6 +119,10 @@ public class UsuarioService {
         } else {
             throw new IllegalArgumentException("No se encontró ningún usuario con el correo electrónico proporcionado.");
         }
+    }
+
+    public Usuario buscarUsuarioPorCorreo(String correo) {
+        return usuarioRepository.findByCorreo(correo);
     }
 
 }

@@ -33,18 +33,24 @@ public class HomeController {
     public String viewRegistro() {
         return "registroUsuario";
     }
-
     @PostMapping("/registro")
     public String registroUsuario(@ModelAttribute("usuario") UsuarioDto usuario, @RequestParam("rol") String rol, Model model) {
         try {
-            usuarioService.registrarUsuario(usuario, rol);
-            model.addAttribute("exitoRegistro", true);
+            // Verificar si el correo ya existe en la base de datos
+            Usuario usuarioExistente = usuarioService.buscarUsuarioPorCorreo(usuario.getCorreo());
+            if (usuarioExistente != null) {
+                model.addAttribute("error", " ¡Error! El correo electrónico ingresado ya está registrado. Por favor, utiliza otro correo.");
+               return  "redirect:/registro?error";
+            } else {
+                usuarioService.registrarUsuario(usuario, rol);
+                model.addAttribute("exitoRegistro", true);
+                return "redirect:/login?registroExitoso";
+            }
         } catch (Exception e) {
-            // Manejar cualquier excepcion que pueda ocurrir durante el registro
-            model.addAttribute("errorRegistro", true);
-            e.printStackTrace(); // Opcional: imprimir el stack trace para debug
+            model.addAttribute("error"," ¡Error! En el registro .");
+            return "redirect:/registro?error";
         }
-        return "redirect:/login?registroExitoso";
+
     }
 
     @GetMapping("/homeUsuario")

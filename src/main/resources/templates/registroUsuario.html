@@ -6,7 +6,9 @@
     <script src="validacion.js"></script>
 </head>
 <body>
-
+<div th:if="${error}">
+    <p style="color: red;" th:text="${error}"></p>
+</div>
 <div >
     <h2>Registro de Usuario</h2>
 
