@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" >
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registro de Enetrenador</title>
+    <title>Registro de Entrenador</title>
+    <script src="validacion.js"></script>
 </head>
 <body>
 
-<div >
+<div>
     <h2>Registro de Entrenador</h2>
 
-    <form th:action="@{/registroEntrenador}" method="post" th:object="${usuario}">
+    <form th:action="@{/registroEntrenador}" method="post" th:object="${usuario}" onsubmit="return validaciones()">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br><br>
 
@@ -21,6 +22,9 @@
 
         <label for="contrasena">Contraseña:</label>
         <input type="password" id="contrasena" name="contrasena" required><br><br>
+
+        <label for="confirmarContrasena">Confirmar Contraseña:</label>
+        <input type="password" id="confirmarContrasena" name="confirmarContrasena" required><br><br>
 
         <input type="hidden" name="rol" value="entrenador">
 

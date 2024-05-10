@@ -40,7 +40,7 @@ public class HomeController {
             usuarioService.registrarUsuario(usuario, rol);
             model.addAttribute("exitoRegistro", true);
         } catch (Exception e) {
-            // Manejar cualquier excepción que pueda ocurrir durante el registro
+            // Manejar cualquier excepcion que pueda ocurrir durante el registro
             model.addAttribute("errorRegistro", true);
             e.printStackTrace(); // Opcional: imprimir el stack trace para debug
         }
@@ -49,7 +49,7 @@ public class HomeController {
 
     @GetMapping("/homeUsuario")
     public String viewPrincipalUsuario(Model model, HttpSession session) throws Exception {
-        // Verificar si el usuario ha iniciado sesión
+        // Verificar si el usuario ha iniciado sesion
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (usuario != null) {
             // Obtener la lista de mascotas asociadas al usuario

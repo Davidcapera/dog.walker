@@ -2,14 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
-    <title>Actualizar Perfil de Usuario</title>
+    <title>Actualizar Perfil de Entrenador</title>
+    <script src="validacion.js"></script>
 </head>
 <body>
 
 <div>
     <h2>Actualizar Perfil de Entrenador</h2>
 
-    <form th:action="@{/actualizarEntrenador}" method="post" th:object="${usuario}">
+    <form th:action="@{/actualizarEntrenador}" method="post" th:object="${usuario}"  onsubmit="return validaciones()">
         <input type="hidden" id="id" name="id" th:value="${usuario.id}"> <!-- Campo oculto para enviar el ID del usuario -->
 
         <label for="nombre">Nombre:</label>
@@ -21,11 +22,13 @@
         <label for="contrasena">Nueva Contraseña:</label>
         <input type="password" id="contrasena" name="contrasena"><br><br>
 
+        <label for="confirmarContrasena">Confirmar Contraseña:</label>
+        <input type="password" id="confirmarContrasena" name="confirmarContrasena" required><br><br>
+
         <input type="hidden" name="rol" value="${usuario.rol}">
 
         <button type="submit">Actualizar</button>
-        <button type="button" th:onclick="'window.location.href=' + (${usuario.rol.rol == 'usuario'} ? '/homeUsuario' : ${usuario.rol.rol == 'entrenador'} ? '/homeEntrenador' : '/homeAdmin')">
-            Cancelar
+        <button type="button" onclick="window.location.href='/homeAdmin';">Cancelar</button>
         </button>
     </form>
 </div>

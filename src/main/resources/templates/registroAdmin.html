@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Registro de Usuario</title>
+    <script src="validacion.js"></script>
 </head>
 <body>
 
 <div >
     <h2>Registro de admin</h2>
 
-    <form th:action="@{/registroAdmin}" method="post" th:object="${usuario}">
+    <form th:action="@{/registroAdmin}" method="post" th:object="${usuario}" onsubmit="return validaciones()">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br><br>
 
@@ -21,6 +22,9 @@
 
         <label for="contrasena">Contraseña:</label>
         <input type="password" id="contrasena" name="contrasena" required><br><br>
+
+         <label for="confirmarContrasena">Confirmar Contraseña:</label>
+         <input type="password" id="confirmarContrasena" name="confirmarContrasena" required><br><br>
 
         <input type="hidden" name="rol" value="admin">
 
