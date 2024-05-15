@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>DOGWALKER</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-<h1>DOG WALKER LO MEJOR</h1>
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a href="/login">LOGIN</a>
+        <a href="/registro">REGISTRO</a>
+    </div>
+</header>
+
+<h1 class="welcome-message">¡Bienvenido a DOG WALKER, el mejor lugar para tu amigo peludo!</h1>
 <p th:text="${message}"></p>
-
-<a th:href="@{/login}">LOGIN</a>
-<a th:href="@{/registro}">REGISTRO</a>
-
 </body>
-
 </html>

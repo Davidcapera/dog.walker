@@ -1,25 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="styleFormularios.css">
 </head>
-<body>
-<form th:action="@{/registrarMascota}" method="post" th:object="${mascota}">
-<label for="nombre">Nombre:</label>
-<input type="text" id="nombre" name="nombre" required><br><br>
 
-<label for="raza">raza</label>
-<input type="text" id="raza" name="raza" required><br><br>
+<body class="login-bg" >
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a href="/homeUsuario">Home</a>
+    </div>
+</header>
+<div class="login-form">
+        <form th:action="@{/registrarMascota}" method="post" th:object="${mascota}">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
 
-<label for="peso">peso</label>
-<input type="number" id="peso" name="peso"><br><br>
+        <label for="raza">raza</label>
+        <input type="text" id="raza" name="raza" required><br><br>
 
-<label for="descripcion">Descripcion:</label>
-<input type="text" id="descripcion" name="descripcion" required><br><br>
+        <label for="peso">peso</label>
+        <input type="number" id="peso" name="peso"><br><br>
 
-<button type="submit">Registrar</button>
-<button type="button" onclick="window.location.href='/homeUsuario';">Cancelar</button>
-</form>
+        <label for="descripcion">Descripcion:</label>
+        <input type="text" id="descripcion" name="descripcion" required><br><br>
+
+        <button type="submit">Registrar</button>
+        <button type="button" onclick="window.location.href='/homeUsuario';">Cancelar</button>
+        </form>
+</div>
 </body>
 </html>

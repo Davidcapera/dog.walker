@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Perfil de Usuario</title>
+    <link rel="stylesheet" type="text/css" href="styleFormularios.css">
 </head>
-<body>
-<h1>Perfil de Usuario</h1>
+<body class="login-bg">
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a th:href="@{${usuario.rol.rol == 'usuario' ? '/homeUsuario' : (usuario.rol.rol == 'entrenador' ? '/homeEntrenador' : '/homeAdmin')}}">
+            Inicio
+        </a>
+    </div>
+</header>
 
-<!-- Mostrar los detalles del usuario -->
-<p><strong>Nombre:</strong> <span th:text="${usuario.nombre}"></span></p>
-<p><strong>Correo electrónico:</strong> <span th:text="${usuario.correo}"></span></p>
-<p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
+<div class="login-form">
+    <h1>Perfil de Usuario</h1>
 
-<form th:action="@{/editarPerfilUsuario}" method="get">
-    <input type="hidden" id="id" name="id" th:value="${usuario.id_usuario}">
-    <button type="submit">Editar Cuenta</button>
-</form>
-<!-- Botón para eliminar perfil -->
-<form th:action="@{/eliminarPerfilUsuario}" method="post"onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu perfi?');">
-    <input type="hidden" id="id" name="id" th:value="${usuario.id_usuario}">
-    <button type="submit">Eliminar Cuenta</button>
-</form>
+    <!-- Mostrar los detalles del usuario -->
+    <p><strong>Nombre:</strong> <span th:text="${usuario.nombre}"></span></p>
+    <p><strong>Correo electrónico:</strong> <span th:text="${usuario.correo}"></span></p>
+    <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
 
-<!-- Redirigir según el rol del usuario -->
-<a th:if="${usuario.rol.rol == 'usuario'}" th:href="@{/homeUsuario}">Inicio</a>
-<a th:if="${usuario.rol.rol == 'entrenador'}" th:href="@{/homeEntrenador}">Inicio</a>
-<a th:if="${usuario.rol.rol == 'admin'}" th:href="@{/homeAdmin}">Inicio</a>
-
+    <form th:action="@{/editarPerfilUsuario}" method="get">
+        <input type="hidden" id="id" name="id" th:value="${usuario.id_usuario}">
+        <button type="submit">Editar Cuenta</button>
+    </form>
+    <!-- Botón para eliminar perfil -->
+    <form th:action="@{/eliminarPerfilUsuario}" method="post"onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu perfi?');">
+        <input type="hidden" id="id" name="id" th:value="${usuario.id_usuario}">
+        <button type="submit">Eliminar Cuenta</button>
+    </form>
+</div>
 </body>
 </html>

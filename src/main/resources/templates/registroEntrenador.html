@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <title>Registro de Entrenador</title>
     <script src="validacion.js"></script>
+    <link rel="stylesheet" type="text/css" href="styleFormularios.css">
 </head>
-<body>
+<body class="login-bg">
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a href="/homeAdmin">Home</a>
+    </div>
+</header>
 
-<div>
+<div class="login-form">
     <h2>Registro de Entrenador</h2>
 
     <form th:action="@{/registroEntrenador}" method="post" th:object="${usuario}" onsubmit="return validaciones()">

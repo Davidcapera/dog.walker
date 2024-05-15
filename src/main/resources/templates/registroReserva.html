@@ -4,12 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Realizar Reserva</title>
+    <link rel="stylesheet" type="text/css" href="styleFormularios.css">
 </head>
-<body>
 
-<h2>Realizar Reserva</h2>
+<body class="login-bg">
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a href="/homeUsuario">Home</a>
+    </div>
+</header>
+<div class="login-form">
+    <h2>Realizar Reserva</h2>
 
-<form th:action="@{/realizarReserva}" th:object="${reservaDto}" method="post">
+    <form th:action="@{/realizarReserva}" th:object="${reservaDto}" method="post">
     <!-- Campo oculto para almacenar el ID de usuario -->
     <input type="hidden" th:if="${session.usuario != null}" th:field="*{idUsuario}" th:value="${session.usuario.id_usuario}"/>
 
@@ -31,7 +39,10 @@
 
     <!-- Botón de enviar -->
     <button type="submit">Realizar Reserva</button>
-</form>
+        <button type="button" onclick="window.location.href='/homeUsuario';">Cancelar</button>
+
+    </form>
+</div>
 
 </body>
 </html>

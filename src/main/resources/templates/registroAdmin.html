@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <title>Registro de Usuario</title>
     <script src="validacion.js"></script>
+    <link rel="stylesheet" type="text/css" href="styleFormularios.css">
 </head>
-<body>
+<body class="login-bg">
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a href="/">Home</a>
+    </div>
+</header>
 
-<div >
+<div class="login-form">
     <h2>Registro de admin</h2>
 
     <form th:action="@{/registroAdmin}" method="post" th:object="${usuario}" onsubmit="return validaciones()">

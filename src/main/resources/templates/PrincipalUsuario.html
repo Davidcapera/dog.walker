@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>PRINCIPAL USUARIO</title>
+    <link rel="stylesheet" type="text/css" href="styleVistaPrincipal.css">
 </head>
 <body>
-<h1>PRINCIPAL USUARIO!</h1>
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a th:href="@{/logout}">Cerrar Sesión</a>
+        <a th:href="@{perfilUsuario}">perfil </a>
+    </div>
+</header>
+
 <p th:text="${message}"></p>
 
 
 
-<!-- Enlace para cerrar sesión -->
-<a th:href="@{/logout}">Cerrar Sesión</a>
-<a th:href="@{perfilUsuario}">perfil </a>
 <h2>Mis Mascotas</h2>
-
-<table border="1">
+<table>
     <thead>
     <tr>
         <th>Nombre</th>
@@ -33,13 +37,12 @@
         <td th:text="${mascota.peso}"></td>
         <td th:text="${mascota.descripcion}"></td>
         <td>
-            <!-- Botón para agregar -->
-
             <!-- Botón para eliminar -->
-            <form th:action="@{/eliminarMascota}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este servicio?');">
+            <form th:action="@{/eliminarMascota}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta mascota?');">
                 <input type="hidden" name="mascotaId" th:value="${mascota.id_mascota}">
                 <button type="submit">Eliminar</button>
             </form>
+            <!-- Botón para actualizar -->
             <form th:action="@{/editarMascota}" method="get">
                 <input type="hidden" name="mascotaId" th:value="${mascota.id_mascota}">
                 <button type="submit">Actualizar</button>
@@ -53,8 +56,7 @@
 </form>
 
 <h2>Mis Reservas</h2>
-
-<table border="1">
+<table>
     <thead>
     <tr>
         <th>Fecha</th>
@@ -89,9 +91,5 @@
 <form th:action="@{/realizarReserva}" method="get">
     <button type="submit">Crear Nueva Reserva</button>
 </form>
-
-
-
-
 </body>
 </html>

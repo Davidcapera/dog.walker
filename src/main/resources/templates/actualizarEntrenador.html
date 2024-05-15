@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Actualizar Perfil de Entrenador</title>
+    <link rel="stylesheet" type="text/css" href="styleFormularios.css">
     <script src="validacion.js"></script>
 </head>
-<body>
+<body class="login-bg">
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a href="/homeAdmin">Home</a>
+    </div>
+</header>
 
-<div>
+<div  class="login-form">
     <h2>Actualizar Perfil de Entrenador</h2>
 
     <form th:action="@{/actualizarEntrenador}" method="post" th:object="${usuario}"  onsubmit="return validaciones()">
@@ -32,9 +39,6 @@
         </button>
     </form>
 </div>
-
-
-
 
 </body>
 </html>

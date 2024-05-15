@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Iniciar sesión</title>
+    <link rel="stylesheet" type="text/css" href="styleFormularios.css"> <!-- Enlaza la hoja de estilos para los formularios -->
 </head>
-<body>
+<body class="login-bg" >
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a href="/">Home</a>
+    </div>
+</header>
 
 <div th:if="${error}">
     <p style="color: red;" th:text="${error}"></p>
 </div>
 
-<div>
+<div class="login-form"> <!-- Agrega la clase login-form al div que contiene el formulario -->
     <h2>Iniciar sesión</h2>
 
     <form th:action="@{/login}" method="post" th:object="${usuario}">
@@ -34,20 +41,18 @@
     </form>
 </div>
 
-<script>
-    function mostrarFormulario() {
-        // Mostrar el formulario de recuperación de contraseña
-        document.getElementById("formularioRecuperacion").style.display = "block";
-    }
-</script>
-</div>
-
 <div th:if="${param.registroExitoso}">
     <div class="alert alert-success" role="alert">
         ¡Registro exitoso! Por favor inicia sesión con tus credenciales.
     </div>
 </div>
 
+<script>
+    function mostrarFormulario() {
+        // Mostrar el formulario de recuperación de contraseña
+        document.getElementById("formularioRecuperacion").style.display = "block";
+    }
+</script>
 
 </body>
 </html>

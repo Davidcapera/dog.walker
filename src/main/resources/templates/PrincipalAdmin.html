@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>PRINCIPAL ADMIN</title>
+    <link rel="stylesheet" type="text/css" href="styleVistaPrincipal.css">
 </head>
 <body>
-<h1><span>Bienvenido</span></h1>
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a th:href="@{/logout}">Cerrar Sesión</a>
+        <a th:href="@{perfilUsuario}">Perfil</a>
+
+    </div>
+</header>
 
 <table border="1">
     <caption><h1>Entrenadores</h1></caption>
@@ -79,8 +87,6 @@
 </form>
 
 
-<a th:href="@{/logout}">Cerrar Sesión</a>
-<a th:href="@{perfilUsuario}">Perfil</a>
 
 </body>
 </html>

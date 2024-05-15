@@ -1,0 +1,74 @@
+body.login-bg {
+    background-color: black; /* Fondo negro */
+}
+
+.login-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #FF6545; /* Fondo rojo para el formulario */
+    color: white;
+    border-radius: 8px;
+    margin-top: 50px;
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.login-form input {
+    width: 97%;
+    padding: 10px;
+    margin-bottom: 15px; /* Reducido el margen inferior para separar los campos */
+    border-radius: 4px;
+    border: none;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FF8960;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px; /* Agregado margen superior para separar el botón del último campo */
+}
+
+.login-form button:hover {
+    background-color: #FFA17A;
+}
+.alert {
+    background-color: #28A745;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+header {
+    background-color: #FF6545; /* cambia el color de fondo a rojo */
+    color: white; /* cambia el color del texto a blanco */
+    font-family: 'Arial', sans-serif; /* utiliza una fuente similar a Arial */
+    font-weight: bold; /* añade negrita para hacerla más similar al título del formulario */
+    font-size: 20px; /* ajusta el tamaño de la fuente según sea necesario */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: white;
+}

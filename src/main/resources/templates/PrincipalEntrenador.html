@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>PRINCIPAL ENTRENADOR</title>
+    <link rel="stylesheet" type="text/css" href="styleVistaPrincipal.css">
 </head>
 <body>
-<h1>PRINCIPAL  Entrenador</h1>
 <p th:text="${message}"></p>
-
-<a th:href="@{/logout}">Cerrar Sesión</a>
-
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a th:href="@{/logout}">Cerrar Sesión</a>
+    </div>
+</header>
 <h2>Mis Reservas</h2>
 
 <table border="1">
@@ -33,17 +36,9 @@
                 <input type="hidden" name="reservaId" th:value="${reserva.idReserva}">
                 <button type="submit">Completada</button>
             </form>
-
         </td>
-
     </tr>
     </tbody>
 </table>
-
-
-
-
 </body>
-
-
 </html>
