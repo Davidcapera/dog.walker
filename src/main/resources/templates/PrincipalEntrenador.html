@@ -5,12 +5,40 @@
     <title>PRINCIPAL ENTRENADOR</title>
 </head>
 <body>
-<h1>PRINCIPAL </h1>
+<h1>PRINCIPAL  Entrenador</h1>
 <p th:text="${message}"></p>
 
 <a th:href="@{/logout}">Cerrar Sesión</a>
 
+<h2>Mis Reservas</h2>
 
+<table border="1">
+    <thead>
+    <tr>
+        <th>Fecha</th>
+        <th>Servicio</th>
+        <th>usuario Responsable</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterar sobre la lista de reservas -->
+    <tr th:each="reserva : ${reservas}">
+        <td th:text="${reserva.fecha}"></td>
+        <td th:text="${reserva.servicio.servicio}"></td>
+        <td th:text="${reserva.usuario.nombre}"></td>
+        <td>
+            <!-- Botón para eliminar -->
+            <form th:action="@{/eliminarReserva}" method="post" onsubmit="return confirm('¿Estás seguro que completaste esta reserva?');">
+                <input type="hidden" name="reservaId" th:value="${reserva.idReserva}">
+                <button type="submit">Completada</button>
+            </form>
+
+        </td>
+
+    </tr>
+    </tbody>
+</table>
 
 
 

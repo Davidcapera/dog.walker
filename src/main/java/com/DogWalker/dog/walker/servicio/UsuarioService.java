@@ -125,5 +125,13 @@ public class UsuarioService {
         return usuarioRepository.findByCorreo(correo);
     }
 
+    public List<Usuario> obtenerEntrenadores() {
+        // Obtener el ID del rol de entrenador (debes establecer esto según tu base de datos)
+        int rolEntrenadorId = 2; // Por ejemplo, si el ID del rol de entrenador es 2
+
+        // Utilizar el método findByRolId para encontrar usuarios por el ID de su rol
+        return usuarioRepository.findByRolId(rolEntrenadorId);
+    }
+
 }
 

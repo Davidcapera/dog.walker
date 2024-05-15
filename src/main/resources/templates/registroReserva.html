@@ -3,26 +3,33 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Reserva de Servicios</title>
+    <title>Realizar Reserva</title>
 </head>
 <body>
 
 <h2>Realizar Reserva</h2>
 
-<form action="#" th:action="@{/realizarReserva}" method="post">
+<form th:action="@{/realizarReserva}" th:object="${reservaDto}" method="post">
+    <!-- Campo oculto para almacenar el ID de usuario -->
+    <input type="hidden" th:if="${session.usuario != null}" th:field="*{idUsuario}" th:value="${session.usuario.id_usuario}"/>
+
+    <!-- Selector de mascotas -->
     <label for="mascota">Selecciona tu mascota:</label><br>
-    <select id="mascota" name="mascota" required>
-        <option th:each="mascota : ${mascotas}" th:value="${mascota.id_mascota}" th:text="${mascota.nombre + ' - ' + mascota.raza}"></option>
+    <select id="mascota" th:field="*{idMascota}" required>
+        <option th:each="mascota : ${mascotas}" th:value="${mascota.id_mascota}" th:text="${mascota.nombre}"></option>
     </select><br><br>
 
+    <!-- Selector de servicios -->
     <label for="servicio">Selecciona el servicio:</label><br>
-    <select id="servicio" name="servicio" required>
+    <select id="servicio" th:field="*{idServicio}" required>
         <option th:each="servicio : ${servicios}" th:value="${servicio.id_servicio}" th:text="${servicio.servicio}"></option>
     </select><br><br>
 
+    <!-- Campo de fecha -->
     <label for="fecha">Selecciona la fecha de la reserva:</label><br>
-    <input type="date" id="fecha" name="fecha" required><br><br>
+    <input type="date" id="fecha" th:field="*{fecha}" required><br><br>
 
+    <!-- Botón de enviar -->
     <button type="submit">Realizar Reserva</button>
 </form>
 

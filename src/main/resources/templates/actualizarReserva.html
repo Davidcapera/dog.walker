@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Reserva</title>
+</head>
+<body>
+
+<h2>Editar Reserva</h2>
+
+<form th:action="@{/editarReserva}" method="post" th:object="${reserva}">
+    <input type="hidden" th:name="idReserva" th:value="${reserva.idReserva}" />
+
+    <!-- Campo para la fecha -->
+    <div>
+        <label for="fecha">Fecha:</label><br>
+        <input type="date" id="fecha" name="fecha" th:value="${reserva.fecha}" required><br><br>
+    </div>
+
+    <div>
+        <label for="mascota">Mascota:</label><br>
+        <input type="text" id="mascota" name="mascota" th:value="${reserva.mascota.nombre}" readonly><br><br>
+    </div>
+
+    <!-- Campo para seleccionar el servicio -->
+    <div>
+        <label for="servicio">Servicio:</label><br>
+        <select id="servicio" name="idServicio" required>
+            <option th:each="servicio : ${servicios}" th:value="${servicio.id_servicio}" th:text="${servicio.servicio}"></option>
+        </select><br><br>
+    </div>
+
+    <button type="submit">Actualizar Reserva</button>
+    <button type="button" onclick="window.location.href='/homeUsuario';">Cancelar</button>
+</form>
+
+</body>
+</html>
