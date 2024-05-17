@@ -11,12 +11,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
-
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private RolRepository rolRepository;
     @Autowired
@@ -131,6 +133,37 @@ public class UsuarioService {
 
         // Utilizar el método findByRolId para encontrar usuarios por el ID de su rol
         return usuarioRepository.findByRolId(rolEntrenadorId);
+    }
+
+    //Generar una nueva contraseña temporal
+    private String generarNuevaContrasenaTemporal() {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 8; i++) {
+            int index = random.nextInt(caracteres.length());
+            sb.append(caracteres.charAt(index));
+        }
+        return sb.toString();
+    }
+
+    // Método para generar y enviar una contraseña temporal al usuario
+    public void generarYEnviarContrasenaTemporal(String correo) throws Exception {
+        try {
+            String nuevaContrasenaTemporal = generarNuevaContrasenaTemporal();
+
+            Usuario usuario = usuarioRepository.findByCorreo(correo);
+            if (usuario != null) {
+                usuario.setContrasena(passwordEncoder.encode(nuevaContrasenaTemporal));
+                usuarioRepository.save(usuario);
+            } else {
+                throw new IllegalArgumentException("No se encontró ningún usuario con el correo electrónico proporcionado.");
+            }
+
+            emailService.sendHtmlEmail(correo, "Recuperación de Contraseña - DogWalker", nuevaContrasenaTemporal);
+        } catch (DataAccessException e) {
+            throw new Exception("Error al generar y enviar la contraseña temporal: " + e.getMessage());
+        }
     }
 
 }

@@ -72,3 +72,11 @@ header {
     text-decoration: none;
     color: white;
 }
+.login-form textarea {
+    width: 97%; /* Ancho del textarea */
+    padding: 10px;
+    margin-bottom: 15px; /* Margen inferior */
+    border-radius: 4px;
+    border: none;
+    resize: vertical; /* Permite redimensionar verticalmente */
+}

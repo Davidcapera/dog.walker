@@ -506,11 +506,7 @@ public class HomeController {
     @PostMapping("/recuperarcontrasena")
     public String recuperarContrasena(@RequestParam("correo") String correo, Model model) {
         try {
-            String contrasena = usuarioService.obtenerContrasenaPorCorreo(correo);
-
-            // Enviar correo electrónico con la contraseña
-            emailService.sendHtmlEmail(correo, "Recuperación de Contraseña - DogWalker", contrasena);
-
+            usuarioService.generarYEnviarContrasenaTemporal(correo);
             model.addAttribute("exitoRecuperacion", true);
         } catch (Exception e) {
             model.addAttribute("errorRecuperacion", true);

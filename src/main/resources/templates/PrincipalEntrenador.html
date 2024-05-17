@@ -13,7 +13,7 @@
         <a th:href="@{/logout}">Cerrar Sesión</a>
     </div>
 </header>
-<h2>Mis Reservas</h2>
+<h2>Servicios Asignados</h2>
 
 <table border="1">
     <thead>
@@ -32,9 +32,9 @@
         <td th:text="${reserva.usuario.nombre}"></td>
         <td>
             <!-- Botón para eliminar -->
-            <form th:action="@{/eliminarReserva}" method="post" onsubmit="return confirm('¿Estás seguro que completaste esta reserva?');">
+            <form th:action="@{/eliminarReserva}" method="post" onsubmit="return confirm('¿Estás seguro que completaste este servicio?');">
                 <input type="hidden" name="reservaId" th:value="${reserva.idReserva}">
-                <button type="submit">Completada</button>
+                <button type="submit">Completado</button>
             </form>
         </td>
     </tr>
