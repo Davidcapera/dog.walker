@@ -12,11 +12,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Rol {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_rol")
     private int id_rol;
 
-    @Column(name= "rol")
+    @Column(name = "rol")
     private String rol;
 
     public int getId() {
@@ -34,4 +36,5 @@ public class Rol {
     public void setRol(String rol) {
         this.rol = rol;
     }
+
 }

@@ -7,17 +7,17 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-
+@Table(name = "reserva")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "reserva")
 public class Reserva {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reserva")
-    private int idReserva; // Corrección en el nombre de la columna del ID de reserva
+    private int idReserva;
 
     @Column(name = "fecha")
     private LocalDate fecha;
@@ -28,7 +28,7 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
+    private Usuario usuario; // El usuario que realiza la reserva
 
     @ManyToOne
     @JoinColumn(name = "id_mascota")
@@ -37,5 +37,4 @@ public class Reserva {
     @ManyToOne
     @JoinColumn(name = "id_entrenador")
     private Usuario entrenador;
-
 }

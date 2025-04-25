@@ -13,14 +13,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Servicio {
+
     @Id
-    @Column (name = "id_servicio")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_servicio")
     private int id_servicio;
 
     @Column(name = "servicio")
     private String servicio;
 
-    @Column(name="descripcion")
+    @Column(name = "descripcion")
     private String descripcion;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario") // Asociamos el servicio con el 'prestador'
+    private Usuario usuario; // El prestador que ofrece este servicio
 
 }

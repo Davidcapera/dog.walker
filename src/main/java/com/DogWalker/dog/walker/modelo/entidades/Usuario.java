@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
@@ -14,6 +15,7 @@ import lombok.Setter;
 public class Usuario {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private int id_usuario;
 
@@ -23,17 +25,15 @@ public class Usuario {
     @Column(name = "correo")
     private String correo;
 
-
     @Column(name = "telefono")
-    private String telefono ;
+    private String telefono;
 
     @Column(name = "contraseña")
     private String contrasena;
 
     @ManyToOne
     @JoinColumn(name = "id_rol")
-    private Rol rol;
-
+    private Rol rol; // Este campo indica el rol de cada usuario
 
 
 
