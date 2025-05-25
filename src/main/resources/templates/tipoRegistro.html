@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOGWALKER - Elige tu Tipo de Registro</title>
+    <link rel="stylesheet" type="text/css" href="styleFormularios.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header mejorado */
+        header {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 15s infinite linear;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #D4AF37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+            animation: fadeInLogo 1s forwards;
+        }
+
+        .buttons {
+            position: relative;
+            z-index: 2;
+        }
+
+        .buttons a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 1rem;
+            padding: 0.7rem 1.5rem;
+            background-color: rgba(51, 51, 51, 0.9);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .buttons a:hover {
+            background-color: #D4AF37;
+            color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Contenedor principal mejorado */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 100px);
+            padding: 40px 20px;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 1s ease-in;
+        }
+
+        /* Hero section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-section h1 {
+            font-size: 2.8rem;
+            color: #D4AF37;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            animation: fadeInText 1.2s ease-out 0.6s both;
+        }
+
+        /* Tarjetas de registro mejoradas */
+        .column {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.8s ease forwards;
+            opacity: 0;
+            border: 1px solid rgba(0, 123, 255, 0.1);
+        }
+
+        .column:first-child {
+            animation-delay: 0.4s;
+        }
+
+        .column:last-child {
+            animation-delay: 0.7s;
+        }
+
+        .column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #007BFF 0%, #D4AF37 100%);
+        }
+
+        .column:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 123, 255, 0.2);
+        }
+
+        .column-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .column:first-child .column-icon {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.3);
+        }
+
+        .column:last-child .column-icon {
+            background: linear-gradient(135deg, #D4AF37 0%, #b8941f 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .column:hover .column-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            color: #007BFF;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .column p {
+            text-align: center;
+            max-width: 350px;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .column button {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 220px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .column:first-child button {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+        }
+
+        .column:first-child button:hover {
+            background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+        }
+
+        .column:last-child button {
+            background: linear-gradient(135deg, #D4AF37 0%, #b8941f 100%);
+            color: white;
+        }
+
+        .column:last-child button:hover {
+            background: linear-gradient(135deg, #b8941f 0%, #9a7a1a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Sección de beneficios */
+        .benefits-section {
+            background: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .benefits-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .benefits-title {
+            font-size: 2.2rem;
+            color: #007BFF;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-item {
+            padding: 1.5rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #D4AF37 0%, #b8941f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .benefit-item h4 {
+            color: #007BFF;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .benefit-item p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Animaciones */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInLogo {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            from { transform: translateX(-100px); }
+            to { transform: translateX(100vw); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .buttons a {
+                margin: 0 0.5rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .hero-section {
+                padding: 40px 20px 30px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-section p {
+                font-size: 1.1rem;
+            }
+
+            .main-container {
+                flex-direction: column;
+                gap: 30px;
+                padding: 30px 20px;
+            }
+
+            .column {
+                padding: 30px 20px;
+            }
+
+            .column h3 {
+                font-size: 1.8rem;
+            }
+
+            .column p {
+                font-size: 1rem;
+            }
+
+            .column button {
+                min-width: 200px;
+                padding: 12px 30px;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .benefits-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header mejorado -->
+<header>
+    <div class="logo">DOG WALKER</div>
+    <div class="buttons">
+        <a href="/">Home</a>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>Únete a DOG WALKER</h1>
+        <p>Elige cómo quieres formar parte de nuestra comunidad de amantes de las mascotas</p>
+    </div>
+</section>
+
+<!-- Contenedor principal con tarjetas mejoradas -->
+<div class="main-container">
+    <!-- Columna izquierda: Registro Usuario -->
+    <div class="column">
+        <div class="column-icon">👤</div>
+        <h3>Registro Usuario</h3>
+        <p>¿Tienes una mascota que necesita cuidado? Regístrate como usuario para acceder a servicios como paseos, cuidado en casa, seguimiento en tiempo real y mucho más.</p>
+        <button onclick="window.location.href='/registro'">Registrar como Usuario</button>
+    </div>
+
+    <!-- Columna derecha: Registro Prestador -->
+    <div class="column">
+        <div class="column-icon">🐕‍🦺</div>
+        <h3>Registro Prestador</h3>
+        <p>¿Amas a los animales y quieres generar ingresos? Regístrate como prestador para ofrecer servicios como paseos, entrenamiento, cuidado y hospedaje de mascotas.</p>
+        <button onclick="window.location.href='/registroPrestador'">Registrar como Prestador</button>
+    </div>
+</div>
+
+<!-- Sección de beneficios -->
+<section class="benefits-section">
+    <div class="benefits-container">
+        <h2 class="benefits-title">¿Por qué elegir DOG WALKER?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-icon">🔒</div>
+                <h4>Seguridad Garantizada</h4>
+                <p>Todos nuestros usuarios y prestadores están verificados y asegurados</p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">💰</div>
+                <h4>Precios Justos</h4>
+                <p>Tarifas transparentes y competitivas para todos nuestros servicios</p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">📱</div>
+                <h4>Fácil de Usar</h4>
+                <p>Plataforma intuitiva con seguimiento en tiempo real de tu mascota</p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">🌟</div>
+                <h4>Calidad Profesional</h4>
+                <p>Cuidadores experimentados y apasionados por el bienestar animal</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    window.addEventListener('mouseover', initLandbot, { once: true });
+    window.addEventListener('touchstart', initLandbot, { once: true });
+    var myLandbot;
+    function initLandbot() {
+      if (!myLandbot) {
+        var s = document.createElement('script');
+        s.type = "module"
+        s.async = true;
+        s.addEventListener('load', function() {
+          var myLandbot = new Landbot.Livechat({
+            configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-2949214-32VPZ4J8P2Q3YT0E/index.json',
+          });
+        });
+        s.src = 'https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+      }
+    }
+</script>
+</body>
+</html>

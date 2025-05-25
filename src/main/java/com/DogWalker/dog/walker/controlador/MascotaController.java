@@ -1,5 +1,4 @@
 package com.DogWalker.dog.walker.controlador;
-
 import com.DogWalker.dog.walker.modelo.dtos.MascotaDto;
 import com.DogWalker.dog.walker.modelo.entidades.Mascota;
 import com.DogWalker.dog.walker.modelo.entidades.Usuario;
@@ -37,4 +36,47 @@ public class MascotaController {
             throw new Exception("No tienes permisos para registrar mascotas");
         }
     }
+    @PostMapping("/eliminarMascota")
+    public String eliminarMascota(@RequestParam("mascotaId") int mascotaId, HttpSession session) throws Exception {
+        // Verificar si el usuario ha iniciado sesion y tiene el rol de "usuario"
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario != null && usuario.getRol().getRol().equals("usuario")) {
+            mascotaService.eliminarMascota(mascotaId);
+            return "redirect:/homeUsuario";
+        } else {
+            // Si el usuario no ha iniciado sesion o no tiene el rol adecuado, redirigir al login
+            throw new Exception("El usuario no ha iniciado sesión o no tiene permisos para eliminar mascotas");
+        }
+    }
+
+    @GetMapping("/editarMascota")
+    public String mostrarFormularioActualizacionMascota(@RequestParam("mascotaId") int mascotaId, Model model, HttpSession session) {
+        // Verificar si el usuario ha iniciado sesion y tiene el rol de "usuario"
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario != null && usuario.getRol().getRol().equals("usuario")) {
+            // Obtener la mascota por su ID
+            Mascota mascota = mascotaService.obtenerMascotaPorId(mascotaId);
+            // Pasar la mascota al modelo
+            model.addAttribute("mascota", mascota);
+            return "editarMascota"; // Permitir el acceso al formulario de edicion de mascotas
+        } else {
+            // Si el usuario no ha iniciado sesion o no tiene el rol adecuado, redirigir al login
+            return "redirect:/login";
+        }
+    }
+
+    @PostMapping("/editarMascota")
+    public String actualizarMascota(@ModelAttribute("mascota") MascotaDto mascotaDto, HttpSession session) throws Exception {
+        // Verificar si el usuario ha iniciado sesion y tiene el rol de "usuario"
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario != null && usuario.getRol().getRol().equals("usuario")) {
+            mascotaService.actualizarMascota(mascotaDto);
+            return "redirect:/homeUsuario"; // Redirigir al home de usuario
+        } else {
+            // Si el usuario no ha iniciado sesion o no tiene el rol adecuado, redirigir al login
+            throw new Exception("El usuario no ha iniciado sesión o no tiene permisos para actualizar mascotas");
+        }
+    }
+
+
 }

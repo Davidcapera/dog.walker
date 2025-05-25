@@ -1,6 +1,7 @@
 package com.DogWalker.dog.walker.servicio;
 import com.DogWalker.dog.walker.modelo.dtos.ServicioDto;
 import com.DogWalker.dog.walker.modelo.entidades.Servicio;
+import com.DogWalker.dog.walker.modelo.entidades.Usuario;
 import com.DogWalker.dog.walker.repositorio.ServicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,18 +13,23 @@ import java.util.Optional;
 @Service
 public class ServicioService {
 
+
     @Autowired
     private ServicioRepository servicioRepository;
 
-    public void registrarServicio(ServicioDto servicioDto) {
+    // Registrar un nuevo servicio
+    public void registrarServicio(ServicioDto servicioDto, Usuario usuario) {
         Servicio servicio = new Servicio();
         servicio.setServicio(servicioDto.getServicio());
         servicio.setDescripcion(servicioDto.getDescripcion());
+        servicio.setPrecio(servicioDto.getPrecio());  // Establecer el precio
+        servicio.setUsuario(usuario);  // Asignar el usuario (prestador) al servicio
 
         // Guardar el servicio en la base de datos
         servicioRepository.save(servicio);
     }
 
+    // Eliminar un servicio por ID
     public void eliminarServicio(int servicioId) throws Exception {
         Optional<Servicio> optionalServicio = servicioRepository.findById(servicioId);
         if (optionalServicio.isPresent()) {
@@ -33,6 +39,12 @@ public class ServicioService {
         }
     }
 
+    // Obtener todos los servicios registrados
+    public List<Servicio> obtenerTodosLosServicios() {
+        return servicioRepository.findAll();
+    }
+
+    // Obtener un servicio por su ID
     public ServicioDto obtenerServicioDtoPorId(int servicioId) {
         Optional<Servicio> optionalServicio = servicioRepository.findById(servicioId);
         if (optionalServicio.isPresent()) {
@@ -42,6 +54,7 @@ public class ServicioService {
             servicioDto.setId_servicio(servicio.getId_servicio());
             servicioDto.setServicio(servicio.getServicio());
             servicioDto.setDescripcion(servicio.getDescripcion());
+            servicioDto.setPrecio(servicio.getPrecio());
             return servicioDto;
         } else {
             // Manejo de error si el servicio no se encuentra
@@ -49,7 +62,7 @@ public class ServicioService {
         }
     }
 
-
+    // Actualizar un servicio
     public void actualizarServicio(ServicioDto servicioDto) {
         try {
             Optional<Servicio> optionalServicio = servicioRepository.findById(servicioDto.getId_servicio());
@@ -58,6 +71,10 @@ public class ServicioService {
                 // Actualizar los valores del servicio con los del DTO
                 servicio.setServicio(servicioDto.getServicio());
                 servicio.setDescripcion(servicioDto.getDescripcion());
+                servicio.setPrecio(servicioDto.getPrecio());  // Actualizar el precio
+                System.out.println("Precio recibido: " + servicioDto.getPrecio());
+                System.out.println("Precio recibido: " + servicio.getPrecio());
+
                 // Guardar los cambios en la base de datos
                 servicioRepository.save(servicio);
             } else {
@@ -65,15 +82,8 @@ public class ServicioService {
             }
         } catch (Exception ex) {
             // Manejo de la excepción
-            ex.printStackTrace(); // o puedes utilizar un sistema de registro como Log4j
+            ex.printStackTrace();
             throw new RuntimeException("Ha ocurrido un error al actualizar el servicio: " + ex.getMessage());
-            // Puedes lanzar una excepción personalizada, devolver un mensaje de error, o realizar otra acción según tu lógica de negocio
         }
     }
-
-    public List<Servicio> obtenerTodosLosServicios() {
-        return servicioRepository.findAll();
-    }
-
-
 }

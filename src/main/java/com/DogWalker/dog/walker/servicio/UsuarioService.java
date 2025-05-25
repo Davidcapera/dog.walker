@@ -147,7 +147,7 @@ public class UsuarioService {
         return sb.toString();
     }
 
-    // Método para generar y enviar una contraseña temporal al usuario
+    /* metodo para contraseña tempoaral*/
     public void generarYEnviarContrasenaTemporal(String correo) throws Exception {
         try {
             String nuevaContrasenaTemporal = generarNuevaContrasenaTemporal();
@@ -165,6 +165,8 @@ public class UsuarioService {
             throw new Exception("Error al generar y enviar la contraseña temporal: " + e.getMessage());
         }
     }
+
+
 
 }
 

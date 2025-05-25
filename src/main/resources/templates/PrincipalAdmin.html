@@ -2,91 +2,908 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>PRINCIPAL ADMIN</title>
-    <link rel="stylesheet" type="text/css" href="styleVistaPrincipal.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRINCIPAL ADMIN - DOG WALKER</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header premium mejorado */
+        .header {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 8px 32px rgba(0, 123, 255, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 15s infinite linear;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #D4AF37;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+            animation: fadeInLogo 1s forwards;
+        }
+
+        .logo i {
+            color: #D4AF37;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(51, 51, 51, 0.9);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: #D4AF37;
+            color: #333;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Container principal con glassmorphism */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Hero section mejorado */
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            border-radius: 25px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 123, 255, 0.3);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #D4AF37;
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+            animation: fadeInText 1.2s ease-out 0.6s both;
+        }
+
+        /* Stats cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 123, 255, 0.1);
+            animation: slideInUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #007BFF 0%, #D4AF37 100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 123, 255, 0.2);
+        }
+
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(135deg, #D4AF37 0%, #b8941f 100%);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Section cards premium */
+        .section-card {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 123, 255, 0.1);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(135deg, #007BFF 0%, #D4AF37 100%);
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0, 123, 255, 0.15);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007BFF;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title i {
+            color: #D4AF37;
+            font-size: 1.8rem;
+            padding: 15px;
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            border-radius: 50%;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Botón agregar premium */
+        .add-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #b8941f 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .add-btn:hover::before {
+            left: 100%;
+        }
+
+        .add-btn:hover {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Tabla premium moderna */
+        .table-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .modern-table thead {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+        }
+
+        .modern-table th {
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        .modern-table th i {
+            margin-right: 8px;
+            color: #D4AF37;
+        }
+
+        .modern-table td {
+            padding: 20px 15px;
+            border-bottom: 1px solid #f1f3f4;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .modern-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .modern-table tbody tr:hover {
+            background: linear-gradient(135deg, rgba(0, 123, 255, 0.05) 0%, rgba(212, 175, 55, 0.05) 100%);
+            transform: scale(1.01);
+        }
+
+        .modern-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Botones de acción premium */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #b8941f 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .edit-btn:hover {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 18px rgba(0, 123, 255, 0.4);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 18px rgba(220, 53, 69, 0.4);
+        }
+
+        /* Estados vacíos mejorados */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #D4AF37;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state h3 {
+            color: #007BFF;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        /* Animaciones mejoradas */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInLogo {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            from { transform: translateX(-100px); }
+            to { transform: translateX(100vw); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-5px);
+            }
+            60% {
+                transform: translateY(-3px);
+            }
+        }
+
+        /* Responsive mejorado */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .hero {
+                padding: 40px 20px;
+                margin-bottom: 40px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .section-card {
+                padding: 25px 20px;
+                margin-bottom: 30px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .modern-table {
+                font-size: 0.9rem;
+            }
+
+            .modern-table th,
+            .modern-table td {
+                padding: 15px 10px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .action-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+
+            .add-btn {
+                padding: 12px 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modern-table th,
+            .modern-table td {
+                padding: 12px 8px;
+            }
+        }
+    </style>
 </head>
 <body>
-<header>
-    <div class="logo">DOG WALKER</div>
-    <div class="buttons">
-        <a th:href="@{/logout}">Cerrar Sesión</a>
-        <a th:href="@{perfilUsuario}">Perfil</a>
-
+<!-- Header premium mejorado -->
+<header class="header">
+    <div class="logo">
+        <i class="fas fa-dog"></i>
+        DOG WALKER
     </div>
+    <nav class="nav-buttons">
+        <a th:href="@{/dashboard}" class="nav-btn">
+            <i class="fas fa-chart-line"></i> Dashboard
+        </a>
+        <a th:href="@{perfilUsuario}" class="nav-btn">
+            <i class="fas fa-user"></i> Perfil
+        </a>
+        <a th:href="@{/logout}" class="nav-btn">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+    </nav>
 </header>
 
-<table border="1">
-    <caption><h1>Entrenadores</h1></caption>
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Teléfono</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Iterar sobre la lista de entrenadores -->
-    <tr th:each="entrenador : ${entrenadores}">
-        <td th:text="${entrenador.nombre}"></td>
-        <td th:text="${entrenador.correo}"></td>
-        <td th:text="${entrenador.telefono}"></td>
-        <td>
-            <!-- Botón para editar -->
-            <form th:action="@{/editarEntrenador}" method="get">
-                <input type="hidden" id="id" name="id" th:value="${entrenador.id_usuario}">
-                <button type="submit">Editar</button>
+<div class="container">
+    <!-- Hero Section mejorado -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Panel de Administración</h1>
+            <p>Gestiona usuarios, prestadores y servicios de la plataforma más completa para el cuidado de mascotas. Control total y análisis en tiempo real.</p>
+        </div>
+    </section>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="stat-number" th:text="${#lists.size(prestador)}">0</div>
+            <div class="stat-label">Prestadores Activos</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-number" th:text="${#lists.size(usuario)}">0</div>
+            <div class="stat-label">Usuarios Registrados</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="stat-number" th:text="${#lists.size(administrador)}">0</div>
+            <div class="stat-label">Administradores</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-concierge-bell"></i>
+            </div>
+            <div class="stat-number" th:text="${#lists.size(servicios)}">0</div>
+            <div class="stat-label">Servicios Disponibles</div>
+        </div>
+    </div>
+
+    <!-- Sección Prestadores -->
+    <section class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-user-tie"></i>
+                PRESTADORES DE SERVICIOS
+            </h2>
+            <form th:action="@{/registroPrestador}" method="get" style="display: inline;">
+                <button type="submit" class="add-btn">
+                    <i class="fas fa-plus"></i>
+                    Agregar Prestador
+                </button>
             </form>
-            <form th:action="@{/eliminarEntrenador}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este entrenador?');">
-                <input type="hidden" id="id" name="id" th:value="${entrenador.id_usuario}">
-                <button type="submit">Eliminar</button>
+        </div>
+
+        <div class="table-container">
+            <table class="modern-table">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-user"></i> Nombre</th>
+                    <th><i class="fas fa-envelope"></i> Correo</th>
+                    <th><i class="fas fa-phone"></i> Teléfono</th>
+                    <th><i class="fas fa-cogs"></i> Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="prestador : ${prestador}">
+                    <td th:text="${prestador.nombre}"></td>
+                    <td th:text="${prestador.correo}"></td>
+                    <td th:text="${prestador.telefono}"></td>
+                    <td>
+                        <div class="action-buttons">
+                            <form th:action="@{/editarPrestador}" method="get" style="display: inline;">
+                                <input type="hidden" name="id" th:value="${prestador.id_usuario}">
+                                <button type="submit" class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                            </form>
+                            <form th:action="@{/eliminarPrestador}" method="post" style="display: inline;"
+                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este prestador?');">
+                                <input type="hidden" name="id" th:value="${prestador.id_usuario}">
+                                <button type="submit" class="action-btn delete-btn">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Sección Usuarios -->
+    <section class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-users"></i>
+                USUARIOS
+            </h2>
+            <form th:action="@{/registroUsuario}" method="get" style="display: inline;">
+                <button type="submit" class="add-btn">
+                    <i class="fas fa-plus"></i>
+                    Agregar Usuario
+                </button>
             </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+        </div>
 
-<!-- Botón para agregar entrenador -->
-<form th:action="@{/registroEntrenador}" method="get">
-    <button type="submit">Agregar Entrenador</button>
-</form>
+        <div class="table-container">
+            <table class="modern-table">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-user"></i> Nombre</th>
+                    <th><i class="fas fa-envelope"></i> Correo</th>
+                    <th><i class="fas fa-phone"></i> Teléfono</th>
+                    <th><i class="fas fa-cogs"></i> Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="usuario : ${usuario}">
+                    <td th:text="${usuario.nombre}"></td>
+                    <td th:text="${usuario.correo}"></td>
+                    <td th:text="${usuario.telefono}"></td>
+                    <td>
+                        <div class="action-buttons">
+                            <form th:action="@{/editarUsuario}" method="get" style="display: inline;">
+                                <input type="hidden" name="id" th:value="${usuario.id_usuario}">
+                                <button type="submit" class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                            </form>
+                            <form th:action="@{/eliminarUsuario}" method="post" style="display: inline;"
+                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                                <input type="hidden" name="id" th:value="${usuario.id_usuario}">
+                                <button type="submit" class="action-btn delete-btn">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-<table border="1">
-    <caption><h1>Servicios de la Plataforma</h1></caption>
-    <thead>
-    <tr>
-        <th>Servicio</th>
-        <th>Descripción</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Iterar sobre la lista de servicios -->
-    <tr th:each="servicio : ${servicios}">
-        <td th:text="${servicio.servicio}"></td>
-        <td th:text="${servicio.descripcion}"></td>
-        <td>
-            <!-- Botón para editar -->
-            <form th:action="@{/editarServicio}" method="get">
-                <input type="hidden" id="id" name="servicioId" th:value="${servicio.id_servicio}">
-                <button type="submit">Editar</button>
+    <!-- Sección Administradores -->
+    <section class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-user-shield"></i>
+                ADMINISTRADORES
+            </h2>
+            <form th:action="@{/registroAdmin}" method="get" style="display: inline;">
+                <button type="submit" class="add-btn">
+                    <i class="fas fa-plus"></i>
+                    Agregar Administrador
+                </button>
             </form>
-            <!-- Botón para eliminar -->
-            <form th:action="@{/eliminarServicio}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este servicio?');">
-                <input type="hidden" id="id" name="servicioId" th:value="${servicio.id_servicio}">
-                <button type="submit">Eliminar</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+        </div>
 
-<!-- Botón para agregar servicio -->
-<form th:action="@{/registrarServicio}" method="get">
-    <button type="submit">Agregar Servicio</button>
-</form>
+        <div class="table-container">
+            <table class="modern-table">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-user"></i> Nombre</th>
+                    <th><i class="fas fa-envelope"></i> Correo</th>
+                    <th><i class="fas fa-phone"></i> Teléfono</th>
+                    <th><i class="fas fa-cogs"></i> Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="admin : ${administrador}">
+                    <td th:text="${admin.nombre}"></td>
+                    <td th:text="${admin.correo}"></td>
+                    <td th:text="${admin.telefono}"></td>
+                    <td>
+                        <div class="action-buttons">
+                            <form th:action="@{/editarAdmin}" method="get" style="display: inline;">
+                                <input type="hidden" name="id" th:value="${admin.id_usuario}">
+                                <button type="submit" class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                            </form>
+                            <form th:action="@{/eliminarAdmin}" method="post" style="display: inline;"
+                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este administrador?');">
+                                <input type="hidden" name="id" th:value="${admin.id_usuario}">
+                                <button type="submit" class="action-btn delete-btn">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
+    <!-- Sección Servicios -->
+    <section class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-concierge-bell"></i>
+                SERVICIOS DE LA PLATAFORMA
+            </h2>
+        </div>
 
+        <table class="modern-table">
+            <thead>
+            <tr>
+                <th><i class="fas fa-tag"></i> Servicio</th>
+                <th><i class="fas fa-dollar-sign"></i> Precio</th>
+                <th><i class="fas fa-info-circle"></i> Descripción</th>
+                <th><i class="fas fa-cogs"></i> Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="servicio : ${servicios}">
+                <td th:text="${servicio.servicio}"></td>
+                <td th:text="${servicio.precio}"></td>
+                <td th:text="${servicio.descripcion}"></td>
+                <td>
+                    <div class="action-buttons">
+                        <form th:action="@{/editarServicio}" method="get" style="display: inline;">
+                            <input type="hidden" name="servicioId" th:value="${servicio.id_servicio}">
+                            <button type="submit" class="action-btn edit-btn">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                        </form>
+                        <form th:action="@{/eliminarServicio}" method="post" style="display: inline;"
+                              onsubmit="return confirm('¿Estás seguro de que deseas eliminar este servicio?');">
+                            <input type="hidden" name="servicioId" th:value="${servicio.id_servicio}">
+                            <button type="submit" class="action-btn delete-btn">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
 
+<script>
+    window.addEventListener('mouseover', initLandbot, { once: true });
+    window.addEventListener('touchstart', initLandbot, { once: true });
+    var myLandbot;
+    function initLandbot() {
+      if (!myLandbot) {
+        var s = document.createElement('script');
+        s.type = "module"
+        s.async = true;
+        s.addEventListener('load', function() {
+          var myLandbot = new Landbot.Livechat({
+            configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-2949214-32VPZ4J8P2Q3YT0E/index.json',
+          });
+        });
+        s.src = 'https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+      }
+    }
+</script>
 </body>
 </html>

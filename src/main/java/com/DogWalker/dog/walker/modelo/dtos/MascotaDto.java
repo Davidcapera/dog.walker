@@ -14,13 +14,14 @@ public class MascotaDto {
     private int idusuario;
     private int id_mascota;
 
-    public int getId_mascota() {
+  public int getId_mascota() {
         return id_mascota;
-    }
+   }
 
-    public void setId_mascota(int id_mascota) {
+   public void setId_mascota(int id_mascota) {
         this.id_mascota = id_mascota;
-    }
+        }
+
 
     public int getIdusuario() {
         return idusuario;

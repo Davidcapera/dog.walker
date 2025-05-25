@@ -18,16 +18,16 @@ import java.util.Random;
 
 @Service
 public class ReservaService {
-@Autowired
-private ReservaRepository reservaRepository;
-@Autowired
-private MascotaRepository mascotaRepository;
-@Autowired
-private UsuarioService usuarioService;
-@Autowired
-private ServicioRepository servicioRepository;
-@Autowired
-private UsuarioRepository usuarioRepository;
+        @Autowired
+        private ReservaRepository reservaRepository;
+        @Autowired
+        private MascotaRepository mascotaRepository;
+        @Autowired
+        private UsuarioService usuarioService;
+        @Autowired
+        private ServicioRepository servicioRepository;
+        @Autowired
+        private UsuarioRepository usuarioRepository;
 
     public void crearReservaUsuario(ReservaDto reservaDto) {
         try {
@@ -56,14 +56,21 @@ private UsuarioRepository usuarioRepository;
             // Obtener la lista de entrenadores
             List<Usuario> entrenadores = usuarioService.obtenerEntrenadores();
 
+
             // Asignar un entrenador aleatorio a la reserva
-            if (!entrenadores.isEmpty()) {
+         /*   if (!entrenadores.isEmpty()) {
                 int indiceAleatorio = new Random().nextInt(entrenadores.size());
                 Usuario entrenadorAsignado = entrenadores.get(indiceAleatorio);
                 reserva.setEntrenador(entrenadorAsignado);
             } else {
                 throw new RuntimeException("No hay entrenadores disponibles");
-            }
+            } */
+
+            //ASIGNAR AL PRESTADOR CREADOR DEL SERVICIO PARA QUE LE LLEGUE DIRECTAMETE A EL
+            Usuario prestador = servicioRepository.getUsuarioByServicioId(reservaDto.getIdServicio());
+
+            // Asignar este usuario como el entrenador a la reserva
+            reserva.setEntrenador(prestador);
 
             // Guardar la reserva en la base de datos
             reservaRepository.save(reserva);

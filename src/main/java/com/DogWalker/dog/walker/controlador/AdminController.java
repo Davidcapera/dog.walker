@@ -1,5 +1,4 @@
 package com.DogWalker.dog.walker.controlador;
-
 import com.DogWalker.dog.walker.modelo.dtos.UsuarioDto;
 import com.DogWalker.dog.walker.servicio.UsuarioService;
 import com.DogWalker.dog.walker.servicio.ServicioService;
@@ -21,32 +20,57 @@ public class AdminController {
 
     @Autowired
     private ServicioService servicioService;
-
+    @GetMapping("/registroAdmin")
+    public String viewRegistroAdmin(HttpSession session) {
+        // Verificar si el usuario ha iniciado sesion y tiene el rol "admin"
+        String rol = (String) session.getAttribute("rol");
+        if (rol != null && rol.equals("admin")) {
+            return "registroAdmin"; // Permitir el acceso a la vista de registro para el admin
+        } else {
+            // Si el usuario no ha iniciado sesion o no tiene el rol adecuado, redirigir al login
+            return "redirect:/login";
+        }
+    }
+    @PostMapping("/registroAdmin")
+    public String registroAdmin(@ModelAttribute("usuario") UsuarioDto usuario, @RequestParam("rol") String rol, HttpSession session) throws Exception {
+        // Verificar si el usuario ha iniciado sesion y tiene el rol "admin"
+        String rolSession = (String) session.getAttribute("rol");
+        if (rolSession != null && rolSession.equals("admin")) {
+            usuarioService.registrarUsuario(usuario, rol);
+            return "redirect:/homeAdmin"; // Permitir el registro si el usuario es admin
+        } else {
+            // Si el usuario no ha iniciado sesion o no tiene el rol adecuado, redirigir al login
+            return "redirect:/login";
+        }
+    }
     @GetMapping("/homeAdmin")
     public String viewPrincipalAdmin(Model model, HttpSession session) {
         String rol = (String) session.getAttribute("rol");
         if ("admin".equals(rol)) {
-            List<Usuario> entrenadores = usuarioService.obtenerEntrenadores(2);
+            List<Usuario> prestadores = usuarioService.obtenerEntrenadores(3);
+            List<Usuario> usuarios = usuarioService.obtenerEntrenadores(2);
+            List<Usuario> administradores = usuarioService.obtenerEntrenadores(1);
             List<Servicio> servicios = servicioService.obtenerTodosLosServicios();
-            model.addAttribute("entrenadores", entrenadores);
+            model.addAttribute("prestador", prestadores);
+            model.addAttribute("usuario", usuarios);
+            model.addAttribute("administrador", administradores);
             model.addAttribute("servicios", servicios);
             return "PrincipalAdmin";
         } else {
             return "redirect:/login";
         }
     }
-
-    @GetMapping("/registroEntrenador")
+    /*@GetMapping("/registroPrestador")
     public String viewRegistroEntrenador(HttpSession session) {
         String rol = (String) session.getAttribute("rol");
         if ("admin".equals(rol)) {
-            return "registroEntrenador";
+            return "registroPrestador";
         } else {
             return "redirect:/login";
         }
     }
-
-    @PostMapping("/registroEntrenador")
+*/
+   /* @PostMapping("/registroPrestador")
     public String registroEntrenador(@ModelAttribute("usuario") UsuarioDto usuario, @RequestParam("rol") String rol, Model model, HttpSession session) {
         String rolSession = (String) session.getAttribute("rol");
         if ("admin".equals(rolSession)) {
@@ -55,21 +79,28 @@ public class AdminController {
                 return "redirect:/homeAdmin?exito";
             } catch (Exception e) {
                 model.addAttribute("error", "Error al registrar al entrenador");
-                return "redirect:/registroEntrenador";
+                return "redirect:/registroPrestador";
             }
         } else {
             return "redirect:/login";
         }
     }
-
     @PostMapping("/eliminarEntrenador")
     public String eliminarEntrenador(@RequestParam("id") int idEntrenador, HttpSession session) {
-        String rol = (String) session.getAttribute("rol");
-        if (rol != null && "admin".equals(rol)) {
-            usuarioService.eliminarUsuario(idEntrenador);
-            return "redirect:/homeAdmin";
+        // Verificar si el usuario ha iniciado sesión y tiene rol de administrador
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario != null ) {
+            try {
+                // Llamar al método para eliminar el entrenador
+                usuarioService.eliminarUsuario(idEntrenador);
+                // Redirigir a la vista principal del administrador
+                return "redirect:/homeAdmin";
+            } catch (Exception e) {
+                return "redirect:/homeAdmin?error";
+            }
         } else {
-            return "redirect:/login";
+            return "redirect:/login"; // Redirigir al login si no cumple los requisitos
         }
     }
+*/
 }

@@ -3,9 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <title>Iniciar sesión</title>
-    <link rel="stylesheet" type="text/css" href="styleFormularios.css"> <!-- Enlaza la hoja de estilos para los formularios -->
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #007BFF; /* Rojo oscuro */
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideDown 1s ease-out;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #D4AF37; /* Dorado */
+        }
+
+        .buttons a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            background-color: #333; /* Negro */
+            border-radius: 4px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .buttons a:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Estilos del formulario de inicio de sesión */
+        .login-form {
+            width: 90%;
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        input {
+            width: 90%;
+            padding: 0.8rem;
+            margin: 0.5rem 0 1.5rem 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 0.8rem;
+            width: 100%;
+            background-color: #D4AF37;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #007BFF;
+            transform: scale(1.05);
+        }
+
+        /* Botón de "Olvidaste tu contraseña" */
+        #mostrarFormularioRecuperacion {
+            background-color: transparent;
+            color:#007BFF;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            text-decoration: underline;
+        }
+
+        #mostrarFormularioRecuperacion:hover {
+            color: #D4AF37;
+        }
+
+        /* Formulario de recuperación de contraseña */
+        #formularioRecuperacion {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        /* Estilos para dispositivos pequeños */
+        @media (max-width: 768px) {
+            .login-form {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            input, button {
+                font-size: 1rem;
+                padding: 1rem;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+    </style>
 </head>
-<body class="login-bg" >
+<body class="login-bg">
+
 <header>
     <div class="logo">DOG WALKER</div>
     <div class="buttons">
@@ -17,26 +172,26 @@
     <p style="color: red;" th:text="${error}"></p>
 </div>
 
-<div class="login-form"> <!-- Agrega la clase login-form al div que contiene el formulario -->
+<div class="login-form"> <!-- Formulario de inicio de sesión -->
     <h2>Iniciar sesión</h2>
 
     <form th:action="@{/login}" method="post" th:object="${usuario}">
-        <label for="correo">Correo electrónico:</label><br>
-        <input type="email" id="correo" name="correo" required><br><br>
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required>
 
-        <label for="contrasena">Contraseña:</label><br>
-        <input type="password" id="contrasena" name="contrasena" required><br><br>
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required>
 
         <button type="submit">Iniciar sesión</button>
-        <button type="button" onclick="window.location.href='/registro';">Registro</button>
+        <button type="button" onclick="window.location.href='/tipoRegistro';">Registro</button>
     </form>
 
     <button id="mostrarFormularioRecuperacion" onclick="mostrarFormulario()">¿Olvidaste tu contraseña?</button>
 
     <!-- Formulario para solicitar recuperación de contraseña (oculto inicialmente) -->
     <form id="formularioRecuperacion" th:action="@{/recuperarcontrasena}" method="post" style="display: none;">
-        <label for="correo">Ingresa tu correo electrónico para recuperar tu contraseña:</label><br>
-        <input type="email" id="correo" name="correo" required><br><br>
+        <label for="correo">Ingresa tu correo electrónico para recuperar tu contraseña:</label>
+        <input type="email" id="correo" name="correo" required>
         <button type="submit">Recuperar contraseña</button>
     </form>
 </div>
@@ -47,10 +202,25 @@
     </div>
 </div>
 
+<script src="../static/formularioRecuperacion.js"></script>
 <script>
-    function mostrarFormulario() {
-        // Mostrar el formulario de recuperación de contraseña
-        document.getElementById("formularioRecuperacion").style.display = "block";
+    window.addEventListener('mouseover', initLandbot, { once: true });
+    window.addEventListener('touchstart', initLandbot, { once: true });
+    var myLandbot;
+    function initLandbot() {
+      if (!myLandbot) {
+        var s = document.createElement('script');
+        s.type = "module"
+        s.async = true;
+        s.addEventListener('load', function() {
+          var myLandbot = new Landbot.Livechat({
+            configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-2949214-32VPZ4J8P2Q3YT0E/index.json',
+          });
+        });
+        s.src = 'https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+      }
     }
 </script>
 

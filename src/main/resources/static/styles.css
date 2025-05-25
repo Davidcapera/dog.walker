@@ -1,68 +1,135 @@
+/* Estilos generales */
 body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-image: url('https://i.pinimg.com/564x/6b/24/8e/6b248edc8857cf5cbdba093e3d15f03a.jpg'); /* reemplaza con tu imagen de fondo */
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: black;
-    height: 100vh;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+    animation: fadeIn 1s ease-in-out;
 }
 
+h1 {
+    font-size: 2.5rem;
+    color: #D4AF37; /* Dorado */
+    text-align: center;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: slideUp 1s forwards 0.5s;
+}
+
+p {
+    text-align: center;
+    font-size: 1rem;
+    color: #555;
+    opacity: 0;
+    animation: fadeInText 1.5s forwards 1s;
+}
+
+/* Estilos del encabezado */
 header {
-    background-color: #FF6545; /* cambia el color de fondo a rojo */
-    color: white; /* cambia el color del texto a blanco */
-    font-family: 'Arial', sans-serif; /* utiliza una fuente similar a Arial */
-    font-weight: bold; /* añade negrita para hacerla más similar al título del formulario */
-    font-size: 20px; /* ajusta el tamaño de la fuente según sea necesario */
-    padding: 20px;
+    background-color: #B22222; /* Rojo oscuro */
+    color: #fff;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideDown 1s ease-out;
 }
 
 .logo {
-    font-size: 24px;
+    font-size: 2rem;
     font-weight: bold;
-    margin-right: 20px;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-between;
+    color: #D4AF37; /* Dorado */
+    opacity: 0;
+    animation: fadeInLogo 1s forwards 0.5s;
 }
 
 .buttons a {
-    margin-right: 10px;
+    color: #fff;
     text-decoration: none;
-    color: white;
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #333; /* Negro */
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
-@media (max-width: 600px) {
+.buttons a:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInLogo {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Estilos para dispositivos pequeños */
+@media (max-width: 768px) {
     header {
         flex-direction: column;
-        align-items: center;
-    }
-    .logo {
-        margin-bottom: 10px;
-    }
-    .buttons {
-        flex-direction: column;
-    }
-    .buttons a {
-        margin-bottom: 10px;
+        text-align: center;
     }
 
-}
-.welcome-message {
-    text-align: center;
-    font-size: 32px;
-    color:  white; /* cambia el color del texto a blanco */
-    font-family: 'Arial', sans-serif; /* utiliza una fuente similar a Arial */
-    font-weight: bold ; /* hace que el texto esté en negrita */
-    margin-top: 160px; /* ajusta el margen superior para bajar el texto */
-    position: absolute;
-    top: 60%; /* ajusta la posición vertical del texto */
-    left: 50%;
-    transform: translate(-50%, -50%);
+    .logo {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .buttons a {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        padding: 0.6rem 1.5rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
 }

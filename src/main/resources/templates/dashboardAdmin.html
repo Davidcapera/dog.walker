@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - DOG WALKER</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header mejorado */
+        header {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 15s infinite linear;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #D4AF37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInLogo 1s forwards;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .admin-badge {
+            background: rgba(212, 175, 55, 0.2);
+            color: #D4AF37;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .buttons a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            background-color: rgba(51, 51, 51, 0.9);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .buttons a:hover {
+            background-color: #D4AF37;
+            color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Título del dashboard */
+        .dashboard-header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: white;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-header h1 {
+            font-size: 3rem;
+            color: #007BFF;
+            margin-bottom: 0.5rem;
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        .dashboard-header p {
+            font-size: 1.2rem;
+            color: #666;
+            animation: fadeInText 1.2s ease-out 0.6s both;
+        }
+
+        /* Container principal */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        /* Grid de estadísticas rápidas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #007BFF 0%, #D4AF37 100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 123, 255, 0.15);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #007BFF;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Grid de gráficos */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #007BFF 0%, #D4AF37 100%);
+        }
+
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 123, 255, 0.15);
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            color: #007BFF;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+            margin-bottom: 10px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Sección de insights */
+        .insights-section {
+            margin-top: 50px;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 123, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 123, 255, 0.4);
+        }
+
+        .insight-card h3 {
+            color: #D4AF37;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .insight-card p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Animaciones */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInLogo {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            from { transform: translateX(-100px); }
+            to { transform: translateX(100vw); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .admin-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .dashboard-header p {
+                font-size: 1.1rem;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                padding: 20px;
+            }
+
+            .chart-wrapper {
+                height: 250px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                text-align: center;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header mejorado -->
+<header>
+    <div class="header-container">
+        <div class="logo">DOG WALKER</div>
+        <div class="admin-info">
+            <div class="admin-badge">👨‍💼 Administrador</div>
+            <div class="buttons">
+                <a href="/homeAdmin">← Volver</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Dashboard Header -->
+<section class="dashboard-header">
+    <h1>Panel de Control</h1>
+    <p>Monitorea el crecimiento y rendimiento de DOG WALKER</p>
+</section>
+
+<!-- Container principal -->
+<div class="main-container">
+    <!-- Estadísticas rápidas -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-number" id="totalUsuarios">-</div>
+            <div class="stat-label">Total Usuarios</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🐕</div>
+            <div class="stat-number" id="totalMascotas">-</div>
+            <div class="stat-label">Mascotas Registradas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-number" id="totalServicios">-</div>
+            <div class="stat-label">Servicios Activos</div>
+        </div>
+    </div>
+
+    <!-- Gráficos principales -->
+    <div class="charts-grid">
+        <div class="chart-container">
+            <h3 class="chart-title">📊 Distribución de Usuarios por Rol</h3>
+            <div class="chart-wrapper">
+                <canvas id="usuariosPorRolChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3 class="chart-title">🐾 Mascotas en la Plataforma</h3>
+            <div class="chart-wrapper">
+                <canvas id="cantidadMascotasChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3 class="chart-title">🎯 Servicios Disponibles</h3>
+            <div class="chart-wrapper">
+                <canvas id="cantidadServiciosChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de insights -->
+    <div class="insights-section">
+        <div class="insights-grid">
+            <div class="insight-card">
+                <h3>💡 Análisis de Crecimiento</h3>
+                <p>La plataforma está experimentando un crecimiento constante en el registro de nuevos usuarios y mascotas, lo que indica una buena adopción del servicio.</p>
+            </div>
+            <div class="insight-card">
+                <h3>📈 Oportunidades</h3>
+                <p>Considera expandir los servicios basándote en la demanda actual y promover la plataforma entre prestadores de servicios para equilibrar la oferta.</p>
+            </div>
+            <div class="insight-card">
+                <h3>🎯 Recomendaciones</h3>
+                <p>Implementa programas de fidelización para usuarios activos y mejora la experiencia de registro para aumentar las conversiones.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    // Configuración de colores personalizados
+    const primaryColor = '#007BFF';
+    const secondaryColor = '#D4AF37';
+    const accentColor = '#0056b3';
+
+    // Datos de usuarios por rol
+    let usuariosPorRol = /*[[${cantidadUsuarios}]]*/ [];
+    let cantidadMascotas = /*[[${cantidadMascotas}]]*/ 0;
+    let cantidadServicios = /*[[${cantidadServicios}]]*/ 0;
+
+    let roles = [];
+    let cantidades = [];
+    let totalUsuarios = 0;
+
+    usuariosPorRol.forEach(function (item) {
+        roles.push(item.rol);
+        cantidades.push(item.cantidadUsuarios);
+        totalUsuarios += item.cantidadUsuarios;
+    });
+
+    // Actualizar estadísticas rápidas
+    document.getElementById('totalUsuarios').textContent = totalUsuarios;
+    document.getElementById('totalMascotas').textContent = cantidadMascotas;
+    document.getElementById('totalServicios').textContent = cantidadServicios;
+
+    // Configuración común para gráficos
+    Chart.defaults.font.family = 'Arial';
+    Chart.defaults.font.size = 12;
+
+    // Gráfico de usuarios por rol (Mejorado)
+    new Chart(document.getElementById('usuariosPorRolChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: roles,
+            datasets: [{
+                label: 'Usuarios por Rol',
+                data: cantidades,
+                backgroundColor: [
+                    primaryColor + '80',
+                    secondaryColor + '80',
+                    accentColor + '80',
+                    '#28a745' + '80'
+                ],
+                borderColor: [
+                    primaryColor,
+                    secondaryColor,
+                    accentColor,
+                    '#28a745'
+                ],
+                borderWidth: 2,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    cornerRadius: 10
+                }
+            }
+        }
+    });
+
+    // Gráfico de mascotas (Mejorado)
+    new Chart(document.getElementById('cantidadMascotasChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['Mascotas Registradas'],
+            datasets: [{
+                label: 'Cantidad',
+                data: [cantidadMascotas],
+                backgroundColor: [secondaryColor + '80'],
+                borderColor: [secondaryColor],
+                borderWidth: 2,
+                borderRadius: 10,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    cornerRadius: 10
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+
+    // Gráfico de servicios (Mejorado)
+    new Chart(document.getElementById('cantidadServiciosChart').getContext('2d'), {
+        type: 'polarArea',
+        data: {
+            labels: ['Servicios Disponibles'],
+            datasets: [{
+                data: [cantidadServicios],
+                backgroundColor: [accentColor + '60'],
+                borderColor: [accentColor],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    cornerRadius: 10
+                }
+            },
+            scales: {
+                r: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                }
+            }
+        }
+    });
+</script>
+<script>
+    window.addEventListener('mouseover', initLandbot, { once: true });
+    window.addEventListener('touchstart', initLandbot, { once: true });
+    var myLandbot;
+    function initLandbot() {
+      if (!myLandbot) {
+        var s = document.createElement('script');
+        s.type = "module"
+        s.async = true;
+        s.addEventListener('load', function() {
+          var myLandbot = new Landbot.Livechat({
+            configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-2949214-32VPZ4J8P2Q3YT0E/index.json',
+          });
+        });
+        s.src = 'https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+      }
+    }
+</script>
+</body>
+</html>

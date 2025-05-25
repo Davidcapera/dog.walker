@@ -13,7 +13,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Servicio {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_servicio")
@@ -25,8 +24,10 @@ public class Servicio {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario") // Asociamos el servicio con el 'prestador'
-    private Usuario usuario; // El prestador que ofrece este servicio
+    @Column(name = "precio")
+    private double precio;  // Nuevo campo para el precio
 
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 }
