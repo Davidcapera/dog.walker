@@ -6,6 +6,317 @@
     <script src="validacion.js"></script>
     <style>
         /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideDown 1s ease-out;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #D4AF37; /* Dorado */
+            opacity: 0;
+            animation: fadeInLogo 1s forwards 0.5s;
+        }
+
+        .buttons a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #333; /* Negro */
+            border-radius: 4px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .buttons a:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Container principal */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 2rem 1rem;
+        }
+
+        /* Estilos del formulario de inicio de sesión */
+        .login-form {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 3rem 2.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: bold;
+        }
+
+        label {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0 1.5rem 0;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fff;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        button {
+            padding: 1rem;
+            width: 100%;
+            background-color: #D4AF37;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #007BFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Botón de registro */
+        .register-btn {
+            background-color: transparent;
+            color: #007BFF;
+            border: 2px solid #007BFF;
+            margin-top: 0.5rem;
+        }
+
+        .register-btn:hover {
+            background-color: #007BFF;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Botón de "Olvidaste tu contraseña" */
+        #mostrarFormularioRecuperacion {
+            background-color: transparent;
+            color: #007BFF;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            text-decoration: underline;
+            width: auto;
+            padding: 0.5rem 0;
+            font-weight: normal;
+        }
+
+        #mostrarFormularioRecuperacion:hover {
+            color: #D4AF37;
+            background-color: transparent;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Formulario de recuperación de contraseña */
+        #formularioRecuperacion {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        #formularioRecuperacion.show {
+            display: block;
+        }
+
+        /* Alertas */
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+            color: #0f5132;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+            color: #842029;
+        }
+
+        /* Divisor visual */
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+            color: #666;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #e0e0e0;
+        }
+
+        .divider span {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 0 1rem;
+        }
+
+        /* Estilos para dispositivos pequeños */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .buttons a {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                padding: 0.6rem 1.5rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+                min-height: calc(100vh - 120px);
+            }
+
+            .login-form {
+                padding: 2rem 1.5rem;
+                max-width: 100%;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            input, button {
+                font-size: 1rem;
+                padding: 1rem;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInLogo {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <style>
+        /* Estilos generales */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f9f9f9;

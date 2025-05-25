@@ -5,11 +5,16 @@
     <title>Registro de Servicio</title>
     <style>
         /* Estilos generales */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            min-height: 100vh;
             color: #333;
             line-height: 1.6;
             animation: fadeIn 1s ease-in-out;
@@ -17,7 +22,7 @@
 
         /* Estilos del encabezado */
         header {
-           background-color: #007BFF; /* AZUL */
+            background-color: #007BFF;
             color: #fff;
             padding: 1rem 2rem;
             display: flex;
@@ -50,54 +55,211 @@
             transform: scale(1.05);
         }
 
-        /* Formulario de registro */
-        .login-form {
-            background-color: #fff;
-            max-width: 500px;
-            margin: 5rem auto;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1s ease-in-out;
+        /* Container principal */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 2rem 1rem;
         }
 
-        .login-form h1 {
+        /* Formulario de registro modernizado */
+        .register-form {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 550px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 3rem 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .register-form h1 {
             text-align: center;
             color: #007BFF;
-            font-size: 2rem;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .register-form h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #D4AF37;
+            border-radius: 2px;
+        }
+
+        .form-group {
             margin-bottom: 1.5rem;
         }
 
-        .login-form label {
+        .register-form label {
             font-size: 1rem;
             margin-bottom: 0.5rem;
             display: block;
+            color: #333;
+            font-weight: 500;
         }
 
-        .login-form input {
-            width: 95%;
-            padding: 0.8rem;
-            margin: 0.5rem 0 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .login-form button {
+        .register-form input, .register-form textarea {
             width: 100%;
-            padding: 0.8rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fff;
+            font-family: inherit;
+        }
+
+        .register-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .register-form input:focus, .register-form textarea:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .price-input {
+            position: relative;
+        }
+
+        .price-input input {
+            padding-right: 50px;
+        }
+
+        .currency-label {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .register-form button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
             background-color: #D4AF37; /* Dorado */
             color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: background-color 0.3s, transform 0.3s;
         }
 
-        .login-form button:hover {
+        .btn-primary:hover {
             background-color: #007BFF;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #666;
+            border: 2px solid #ccc;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8f9fa;
+            border-color: #007BFF;
+            color: #007BFF;
+            transform: translateY(-2px);
+        }
+
+        /* Validación visual */
+        .input-error {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+        }
+
+        .input-success {
+            border-color: #28a745 !important;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1) !important;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        /* Estilos para dispositivos pequeños */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .buttons a {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                padding: 0.6rem 1.5rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+                min-height: calc(100vh - 120px);
+            }
+
+            .register-form {
+                padding: 2rem 1.5rem;
+                max-width: 100%;
+            }
+
+            .register-form h1 {
+                font-size: 1.8rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .register-form input,
+            .register-form textarea,
+            .register-form button {
+                font-size: 1rem;
+                padding: 1rem;
+            }
         }
 
         /* Animaciones */
@@ -130,27 +292,63 @@
             }
         }
 
-        /* Estilos para dispositivos pequeños */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                text-align: center;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-
-            .logo {
-                font-size: 1.8rem;
-                margin-bottom: 1rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
 
-            .buttons a {
-                margin-left: 0;
-                margin-top: 0.5rem;
-                padding: 0.6rem 1.5rem;
+        /* Efecto de carga en botones */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
             }
+        }
 
-            .login-form {
-                width: 90%;
-                margin-top: 3rem;
+        /* Efectos adicionales */
+        .form-group {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
@@ -164,24 +362,135 @@
     </div>
 </header>
 
-<!-- Formulario de registro -->
-<div class="login-form">
-    <h1>Registro De Servicio</h1>
-    <form th:action="@{/registrarServicio}" method="post" th:object="${servicio}">
-        <label for="servicio">Nombre:</label>
-        <input type="text" id="servicio" name="servicio" required>
+<div class="main-container">
+    <!-- Formulario de registro -->
+    <div class="register-form">
+        <h1>Registro De Servicio</h1>
+        <form th:action="@{/registrarServicio}" method="post" th:object="${servicio}">
+            <div class="form-group">
+                <label for="servicio">Nombre del Servicio:</label>
+                <input type="text" id="servicio" name="servicio" required
+                       placeholder="Ej: Paseo básico, Cuidado nocturno...">
+                <div class="error-message">Por favor ingresa un nombre válido</div>
+            </div>
 
-        <label for="descripcion">Descripción:</label>
-        <input type="text" id="descripcion" name="descripcion" required>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required
+                          placeholder="Describe detalladamente el servicio que ofreces..."></textarea>
+                <div class="error-message">La descripción debe tener al menos 10 caracteres</div>
+            </div>
 
-        <label for="precio">Precio:</label>
-        <input type="number" id="precio" name="precio" required><span>COP</span>
+            <div class="form-group">
+                <label for="precio">Precio:</label>
+                <div class="price-input">
+                    <input type="number" id="precio" name="precio" required min="1"
+                           placeholder="0">
+                    <span class="currency-label">COP</span>
+                </div>
+                <div class="error-message">Por favor ingresa un precio válido</div>
+            </div>
 
-        <button type="submit">Registrar</button><br><br>
-        <button type="button" onclick="window.location.href='/homePrestador';">Cancelar</button>
-    </form>
+            <div class="button-group">
+                <button type="submit" class="btn-primary">Registrar Servicio</button>
+                <button type="button" class="btn-secondary" onclick="window.location.href='/homePrestador';">Cancelar</button>
+            </div>
+        </form>
+    </div>
 </div>
+
 <script>
+    // Validación del formulario
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const nombreInput = document.getElementById('servicio');
+        const descripcionInput = document.getElementById('descripcion');
+        const precioInput = document.getElementById('precio');
+
+        // Validación en tiempo real
+        nombreInput.addEventListener('input', function() {
+            validateName(this);
+        });
+
+        descripcionInput.addEventListener('input', function() {
+            validateDescription(this);
+        });
+
+        precioInput.addEventListener('input', function() {
+            validatePrice(this);
+        });
+
+        // Validación al enviar
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            if (!validateName(nombreInput)) isValid = false;
+            if (!validateDescription(descripcionInput)) isValid = false;
+            if (!validatePrice(precioInput)) isValid = false;
+
+            if (!isValid) {
+                e.preventDefault();
+            } else {
+                // Mostrar efecto de carga
+                const submitBtn = form.querySelector('.btn-primary');
+                submitBtn.classList.add('btn-loading');
+            }
+        });
+
+        function validateName(input) {
+            const value = input.value.trim();
+            const errorMsg = input.parentNode.querySelector('.error-message');
+
+            if (value.length < 3) {
+                input.classList.add('input-error');
+                input.classList.remove('input-success');
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'El nombre debe tener al menos 3 caracteres';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                input.classList.add('input-success');
+                errorMsg.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateDescription(input) {
+            const value = input.value.trim();
+            const errorMsg = input.parentNode.querySelector('.error-message');
+
+            if (value.length < 10) {
+                input.classList.add('input-error');
+                input.classList.remove('input-success');
+                errorMsg.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                input.classList.add('input-success');
+                errorMsg.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validatePrice(input) {
+            const value = parseFloat(input.value);
+            const errorMsg = input.parentNode.parentNode.querySelector('.error-message');
+
+            if (isNaN(value) || value <= 0) {
+                input.classList.add('input-error');
+                input.classList.remove('input-success');
+                errorMsg.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                input.classList.add('input-success');
+                errorMsg.style.display = 'none';
+                return true;
+            }
+        }
+    });
+
+    // Chatbot de Landbot
     window.addEventListener('mouseover', initLandbot, { once: true });
     window.addEventListener('touchstart', initLandbot, { once: true });
     var myLandbot;

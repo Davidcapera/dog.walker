@@ -2,126 +2,443 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Actualizar Perfil</title>
+    <title>Actualizar Perfil - DOG WALKER</title>
     <script src="validacion.js"></script>
     <style>
-        /* Estilos generales */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+        * {
             margin: 0;
             padding: 0;
-            color: #333;
-            line-height: 1.6;
-            animation: fadeIn 1s ease-in-out;
+            box-sizing: border-box;
         }
 
-        /* Estilos del encabezado */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 50%, #D4AF37 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Fondo animado con formas */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 123, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: floatingBg 20s ease-in-out infinite;
+        }
+
+        @keyframes floatingBg {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Header mejorado */
         header {
-            background-color: #007BFF; /* Rojo oscuro */
-            color: #fff;
+            background: rgba(0, 123, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            animation: slideDown 1s ease-out;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.8s ease-out;
         }
 
         .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #D4AF37; /* Dorado */
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #D4AF37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: fadeInLogo 1s forwards 0.3s;
+        }
+
+        .logo::after {
+            content: '🐕';
+            position: absolute;
+            right: -40px;
+            top: 0;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
         .buttons a {
             color: #fff;
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            background-color: #333;
-            border-radius: 4px;
-            transition: background-color 0.3s, transform 0.3s;
+            margin-left: 1rem;
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(45deg, #D4AF37, #b8941f);
+            color: white;
+            border-radius: 25px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .buttons a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
         }
 
         .buttons a:hover {
-            background-color: #555;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
         }
 
-        /* Estilos del formulario de actualización */
-        .login-form {
-            width: 90%;
-            max-width: 600px;
-            margin: 2rem auto;
+        .buttons a:hover::before {
+            left: 100%;
+        }
+
+        /* Container principal */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 100px);
             padding: 2rem;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        h2 {
-            font-size: 2rem;
-            color: #007BFF;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        input {
-            width: 94%;
-            padding: 0.8rem;
-            margin: 0.5rem 0 1.5rem 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 1rem;
-        }
-
-        button {
-            padding: 0.8rem;
+        /* Formulario de actualizar perfil */
+        .profile-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            max-width: 600px;
             width: 100%;
-            background-color: #D4AF37;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            transition: background-color 0.3s, transform 0.3s;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            overflow: hidden;
         }
 
-        button:hover {
-            background-color: #007BFF;
-            transform: scale(1.05);
+        .profile-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #007BFF, #D4AF37, #007BFF);
+            animation: gradientShift 3s ease-in-out infinite;
         }
 
-        /* Botón de "Cancelar" */
-        button[type="button"] {
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .form-title {
+            text-align: center;
+            color: #007BFF;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(45deg, #007BFF, #D4AF37);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+
+        .profile-form label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #007BFF;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .profile-form input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .profile-form input:focus {
+            outline: none;
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .profile-form input:focus + label {
+            color: #D4AF37;
+        }
+
+        /* Iconos para los campos */
+        .form-group::before {
+            content: '';
+            position: absolute;
+            right: 1rem;
+            top: 3rem;
+            width: 20px;
+            height: 20px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .form-group:nth-child(2)::before {
+            content: '👤';
+        }
+
+        .form-group:nth-child(3)::before {
+            content: '📱';
+        }
+
+        .form-group:nth-child(4)::before,
+        .form-group:nth-child(5)::before {
+            content: '🔒';
+        }
+
+        /* Indicador de fuerza de contraseña mejorado */
+        .password-strength {
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 0.8rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .password-strength-bar {
+            height: 100%;
             background-color: #ccc;
-            margin-top: 0.5rem;
+            width: 0%;
+            transition: width 0.4s ease, background-color 0.4s ease;
+            border-radius: 3px;
         }
 
-        button[type="button"]:hover {
-            background-color: #aaa;
+        .strength-weak {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+        }
+        .strength-medium {
+            background: linear-gradient(45deg, #ffc107, #e0a800);
+        }
+        .strength-strong {
+            background: linear-gradient(45deg, #28a745, #1e7e34);
+        }
+
+        /* Validación visual mejorada */
+        .input-error {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .input-success {
+            border-color: #28a745 !important;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15) !important;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 6px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(40, 167, 69, 0.1);
+            border-radius: 6px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Iconos de validación mejorados */
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon::after {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            display: none;
+            font-size: 16px;
+            line-height: 20px;
+            text-align: center;
+        }
+
+        .input-icon.valid::after {
+            content: '✓';
+            color: #28a745;
+            display: block;
+            font-weight: bold;
+            animation: checkmark 0.5s ease;
+        }
+
+        .input-icon.invalid::after {
+            content: '✗';
+            color: #dc3545;
+            display: block;
+            font-weight: bold;
+            animation: crossmark 0.5s ease;
+        }
+
+        @keyframes checkmark {
+            0% { transform: translateY(-50%) scale(0); }
+            100% { transform: translateY(-50%) scale(1); }
+        }
+
+        @keyframes crossmark {
+            0% { transform: translateY(-50%) scale(0) rotate(0deg); }
+            100% { transform: translateY(-50%) scale(1) rotate(180deg); }
+        }
+
+        /* Botones mejorados */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #D4AF37, #b8941f);
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(0, 123, 255, 0.1);
+            color: #007BFF;
+            border: 2px solid rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 123, 255, 0.2);
+            transform: translateY(-2px);
+            border-color: #007BFF;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Efecto de carga en botones mejorado */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+
+        .btn-loading::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s linear infinite;
         }
 
         /* Animaciones */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
         @keyframes slideDown {
             from {
-                transform: translateY(-20px);
+                transform: translateY(-100%);
                 opacity: 0;
             }
             to {
@@ -130,89 +447,383 @@
             }
         }
 
-        /* Estilos para dispositivos pequeños */
+        @keyframes fadeInLogo {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Efectos adicionales */
+        .form-group:hover label {
+            color: #D4AF37;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
-                text-align: center;
+                padding: 1rem;
+                gap: 1rem;
             }
 
             .logo {
-                font-size: 1.8rem;
-                margin-bottom: 1rem;
+                font-size: 2rem;
+            }
+
+            .logo::after {
+                right: -35px;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .profile-form {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .form-title {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
             }
 
             .buttons a {
                 margin-left: 0;
                 margin-top: 0.5rem;
-                padding: 0.6rem 1.5rem;
             }
+        }
 
-            .login-form {
-                width: 95%;
-                padding: 1rem;
-            }
-
-            h2 {
+        @media (max-width: 480px) {
+            .form-title {
                 font-size: 1.8rem;
             }
 
-            .login-form p {
-                font-size: 1rem;
+            .profile-form {
+                padding: 1.5rem 1rem;
             }
+        }
+
+        /* Loading overlay */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(212, 175, 55, 0.3);
+            border-top: 5px solid #D4AF37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
     </style>
 </head>
-<body class="login-bg">
+
+<body>
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+</div>
 
 <header>
     <div class="logo">DOG WALKER</div>
     <div class="buttons">
-        <a href="/homeUsuario">Home</a>
+        <a href="/homeUsuario">🏠 Home</a>
     </div>
 </header>
 
-<div class="login-form">
-    <h2>Actualizar Perfil de Usuario</h2>
+<div class="main-container">
+    <div class="profile-form">
+        <h2 class="form-title">Actualizar Perfil</h2>
 
-    <form th:action="@{/actualizarPerfilUsuario}" method="post" th:object="${usuario}" onsubmit="return validaciones()">
-        <input type="hidden" id="id" name="id" th:value="${usuario.id}"> <!-- Campo oculto para enviar el ID del usuario -->
+        <form th:action="@{/actualizarPerfilUsuario}" method="post" th:object="${usuario}" onsubmit="return validaciones()" id="profileForm">
+            <input type="hidden" id="id" name="id" th:value="${usuario.id}">
 
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" required>
+            <div class="form-group">
+                <label for="nombre">Nombre completo:</label>
+                <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" required placeholder="Ingresa tu nombre completo">
+                <div class="error-message" id="nombre-error"></div>
+                <div class="success-message" id="nombre-success"></div>
+            </div>
 
-        <label for="telefono">Teléfono de Contacto:</label>
-        <input type="tel" id="telefono" name="telefono" th:value="${usuario.telefono}">
+            <div class="form-group">
+                <label for="telefono">Teléfono de contacto:</label>
+                <input type="tel" id="telefono" name="telefono" th:value="${usuario.telefono}" placeholder="Ej: +56 9 1234 5678">
+                <div class="error-message" id="telefono-error"></div>
+                <div class="success-message" id="telefono-success"></div>
+            </div>
 
-        <label for="contrasena">Nueva Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena">
-        <label for="confirmarContrasena">Confirmar Contraseña:</label>
-        <input type="password" id="confirmarContrasena" name="confirmarContrasena" required>
+            <div class="form-group">
+                <label for="contrasena">Nueva contraseña:</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="Deja en blanco para mantener la actual">
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="password-strength-bar"></div>
+                </div>
+                <div class="error-message" id="contrasena-error"></div>
+                <div class="success-message" id="contrasena-success"></div>
+            </div>
 
-        <input type="hidden" name="rol" value="${usuario.rol}">
+            <div class="form-group">
+                <label for="confirmarContrasena">Confirmar contraseña:</label>
+                <input type="password" id="confirmarContrasena" name="confirmarContrasena" placeholder="Confirma tu nueva contraseña">
+                <div class="error-message" id="confirmar-error"></div>
+                <div class="success-message" id="confirmar-success"></div>
+            </div>
 
-        <button type="submit">Actualizar</button>
-        <button type="button" onclick="window.location.href='/perfilUsuario';">Cancelar</button>
-    </form>
+            <input type="hidden" name="rol" th:value="${usuario.rol}">
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">✨ Actualizar Perfil</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/perfilUsuario';">❌ Cancelar</button>
+            </div>
+        </form>
+    </div>
 </div>
+
 <script>
+    // Validación en tiempo real del nombre
+    document.getElementById('nombre').addEventListener('input', function() {
+        const nombre = this.value.trim();
+        const errorDiv = document.getElementById('nombre-error');
+        const successDiv = document.getElementById('nombre-success');
+
+        if (nombre.length < 2) {
+            this.classList.add('input-error');
+            this.classList.remove('input-success');
+            errorDiv.textContent = 'El nombre debe tener al menos 2 caracteres';
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
+        } else {
+            this.classList.remove('input-error');
+            this.classList.add('input-success');
+            errorDiv.style.display = 'none';
+            successDiv.textContent = 'Nombre válido';
+            successDiv.style.display = 'block';
+        }
+    });
+
+    // Validación del teléfono
+    document.getElementById('telefono').addEventListener('input', function() {
+        const telefono = this.value.trim();
+        const errorDiv = document.getElementById('telefono-error');
+        const successDiv = document.getElementById('telefono-success');
+        const phoneRegex = /^(\+?56)?[\s-]?9[\s-]?\d{4}[\s-]?\d{4}$/;
+
+        if (telefono && !phoneRegex.test(telefono)) {
+            this.classList.add('input-error');
+            this.classList.remove('input-success');
+            errorDiv.textContent = 'Formato de teléfono inválido (Ej: +56 9 1234 5678)';
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
+        } else if (telefono) {
+            this.classList.remove('input-error');
+            this.classList.add('input-success');
+            errorDiv.style.display = 'none';
+            successDiv.textContent = 'Teléfono válido';
+            successDiv.style.display = 'block';
+        } else {
+            this.classList.remove('input-error', 'input-success');
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+        }
+    });
+
+    // Validación de fuerza de contraseña
+    document.getElementById('contrasena').addEventListener('input', function() {
+        const password = this.value;
+        const strengthBar = document.getElementById('password-strength-bar');
+        const errorDiv = document.getElementById('contrasena-error');
+        const successDiv = document.getElementById('contrasena-success');
+
+        if (password.length === 0) {
+            strengthBar.style.width = '0%';
+            strengthBar.className = 'password-strength-bar';
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            this.classList.remove('input-error', 'input-success');
+            return;
+        }
+
+        let strength = 0;
+
+        // Criterios de fuerza
+        if (password.length >= 8) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/\d/.test(password)) strength++;
+        if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) strength++;
+
+        switch (strength) {
+            case 0:
+            case 1:
+            case 2:
+                strengthBar.style.width = '33%';
+                strengthBar.className = 'password-strength-bar strength-weak';
+                this.classList.add('input-error');
+                this.classList.remove('input-success');
+                errorDiv.textContent = 'Contraseña débil';
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                break;
+            case 3:
+            case 4:
+                strengthBar.style.width = '66%';
+                strengthBar.className = 'password-strength-bar strength-medium';
+                this.classList.remove('input-error', 'input-success');
+                errorDiv.style.display = 'none';
+                successDiv.textContent = 'Contraseña moderada';
+                successDiv.style.display = 'block';
+                break;
+            case 5:
+                strengthBar.style.width = '100%';
+                strengthBar.className = 'password-strength-bar strength-strong';
+                this.classList.remove('input-error');
+                this.classList.add('input-success');
+                errorDiv.style.display = 'none';
+                successDiv.textContent = 'Contraseña fuerte';
+                successDiv.style.display = 'block';
+                break;
+        }
+    });
+
+    // Validación de confirmación de contraseña
+    document.getElementById('confirmarContrasena').addEventListener('input', function() {
+        const password = document.getElementById('contrasena').value;
+        const confirmPassword = this.value;
+        const errorDiv = document.getElementById('confirmar-error');
+        const successDiv = document.getElementById('confirmar-success');
+
+        if (confirmPassword && password !== confirmPassword) {
+            this.classList.add('input-error');
+            this.classList.remove('input-success');
+            errorDiv.textContent = 'Las contraseñas no coinciden';
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
+        } else if (confirmPassword) {
+            this.classList.remove('input-error');
+            this.classList.add('input-success');
+            errorDiv.style.display = 'none';
+            successDiv.textContent = 'Las contraseñas coinciden';
+            successDiv.style.display = 'block';
+        } else {
+            this.classList.remove('input-error', 'input-success');
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+        }
+    });
+
+    // Función de validación mejorada
+    function validaciones() {
+        const nombre = document.getElementById('nombre').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const contrasena = document.getElementById('contrasena').value;
+        const confirmarContrasena = document.getElementById('confirmarContrasena').value;
+
+        let isValid = true;
+
+        // Validar nombre
+        if (nombre.length < 2) {
+            document.getElementById('nombre').classList.add('input-error');
+            isValid = false;
+        }
+
+        // Validar teléfono si se proporciona
+        if (telefono) {
+            const phoneRegex = /^(\+?56)?[\s-]?9[\s-]?\d{4}[\s-]?\d{4}$/;
+            if (!phoneRegex.test(telefono)) {
+                document.getElementById('telefono').classList.add('input-error');
+                isValid = false;
+            }
+        }
+
+        // Validar contraseñas si se proporciona nueva contraseña
+        if (contrasena) {
+            if (contrasena.length < 6) {
+                document.getElementById('contrasena').classList.add('input-error');
+                isValid = false;
+            }
+
+            if (contrasena !== confirmarContrasena) {
+                document.getElementById('confirmarContrasena').classList.add('input-error');
+                isValid = false;
+            }
+        }
+
+        if (isValid) {
+            // Mostrar loading
+            document.getElementById('loading').style.display = 'flex';
+            document.querySelector('.btn-primary').classList.add('btn-loading');
+        }
+
+        return isValid;
+    }
+
+    // Efectos hover en los campos
+    document.querySelectorAll('input[type="text"], input[type="tel"], input[type="password"]').forEach(field => {
+        field.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+
+        field.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    });
+
+    // Chatbot de Landbot
     window.addEventListener('mouseover', initLandbot, { once: true });
     window.addEventListener('touchstart', initLandbot, { once: true });
     var myLandbot;
     function initLandbot() {
-      if (!myLandbot) {
-        var s = document.createElement('script');
-        s.type = "module"
-        s.async = true;
-        s.addEventListener('load', function() {
-          var myLandbot = new Landbot.Livechat({
-            configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-2949214-32VPZ4J8P2Q3YT0E/index.json',
-          });
-        });
-        s.src = 'https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs';
-        var x = document.getElementsByTagName('script')[0];
-        x.parentNode.insertBefore(s, x);
-      }
+        if (!myLandbot) {
+            var s = document.createElement('script');
+            s.type = "module"
+            s.async = true;
+            s.addEventListener('load', function() {
+                var myLandbot = new Landbot.Livechat({
+                    configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-2949214-32VPZ4J8P2Q3YT0E/index.json',
+                });
+            });
+            s.src = 'https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs';
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+        }
     }
 </script>
 </body>

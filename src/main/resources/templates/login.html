@@ -2,14 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Iniciar sesión</title>
+    <title>Iniciar sesión - DOG WALKER</title>
     <style>
         /* Estilos generales */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+            min-height: 100vh;
             color: #333;
             line-height: 1.6;
             animation: fadeIn 1s ease-in-out;
@@ -17,7 +22,7 @@
 
         /* Estilos del encabezado */
         header {
-            background-color: #007BFF; /* Rojo oscuro */
+            background-color: #007BFF;
             color: #fff;
             padding: 1rem 2rem;
             display: flex;
@@ -31,11 +36,14 @@
             font-size: 2rem;
             font-weight: bold;
             color: #D4AF37; /* Dorado */
+            opacity: 0;
+            animation: fadeInLogo 1s forwards 0.5s;
         }
 
         .buttons a {
             color: #fff;
             text-decoration: none;
+            margin-left: 1rem;
             padding: 0.5rem 1rem;
             background-color: #333; /* Negro */
             border-radius: 4px;
@@ -47,83 +55,201 @@
             transform: scale(1.05);
         }
 
+        /* Container principal */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 2rem 1rem;
+        }
+
         /* Estilos del formulario de inicio de sesión */
         .login-form {
-            width: 90%;
-            max-width: 400px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 3rem 2.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.8s ease-out;
         }
 
         h2 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: #007BFF;
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: bold;
         }
 
         label {
             font-size: 1rem;
             margin-bottom: 0.5rem;
             display: block;
+            color: #333;
+            font-weight: 500;
         }
 
         input {
-            width: 90%;
-            padding: 0.8rem;
+            width: 100%;
+            padding: 1rem;
             margin: 0.5rem 0 1.5rem 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
             font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fff;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
         }
 
         button {
-            padding: 0.8rem;
+            padding: 1rem;
             width: 100%;
             background-color: #D4AF37;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1.2rem;
-            margin-top: 1rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
             transition: background-color 0.3s, transform 0.3s;
         }
 
         button:hover {
             background-color: #007BFF;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Botón de registro */
+        .register-btn {
+            background-color: transparent;
+            color: #007BFF;
+            border: 2px solid #007BFF;
+            margin-top: 0.5rem;
+        }
+
+        .register-btn:hover {
+            background-color: #007BFF;
+            color: white;
+            transform: translateY(-2px);
         }
 
         /* Botón de "Olvidaste tu contraseña" */
         #mostrarFormularioRecuperacion {
             background-color: transparent;
-            color:#007BFF;
+            color: #007BFF;
             border: none;
             font-size: 1rem;
             cursor: pointer;
             margin-top: 1rem;
             text-decoration: underline;
+            width: auto;
+            padding: 0.5rem 0;
+            font-weight: normal;
         }
 
         #mostrarFormularioRecuperacion:hover {
             color: #D4AF37;
+            background-color: transparent;
+            transform: none;
+            box-shadow: none;
         }
 
         /* Formulario de recuperación de contraseña */
         #formularioRecuperacion {
-            margin-top: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
             display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        #formularioRecuperacion.show {
+            display: block;
+        }
+
+        /* Alertas */
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+            color: #0f5132;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+            color: #842029;
+        }
+
+        /* Divisor visual */
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+            color: #666;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #e0e0e0;
+        }
+
+        .divider span {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 0 1rem;
         }
 
         /* Estilos para dispositivos pequeños */
         @media (max-width: 768px) {
-            .login-form {
-                width: 95%;
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .buttons a {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                padding: 0.6rem 1.5rem;
+            }
+
+            .main-container {
                 padding: 1rem;
+                min-height: calc(100vh - 120px);
+            }
+
+            .login-form {
+                padding: 2rem 1.5rem;
+                max-width: 100%;
             }
 
             h2 {
@@ -157,9 +283,39 @@
             }
         }
 
+        @keyframes fadeInLogo {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
-<body class="login-bg">
+<body>
 
 <header>
     <div class="logo">DOG WALKER</div>
@@ -168,42 +324,72 @@
     </div>
 </header>
 
-<div th:if="${error}">
-    <p style="color: red;" th:text="${error}"></p>
-</div>
+<div class="main-container">
+    <div class="login-form">
+        <h2>Iniciar sesión</h2>
 
-<div class="login-form"> <!-- Formulario de inicio de sesión -->
-    <h2>Iniciar sesión</h2>
+        <!-- Mensaje de error -->
+        <div th:if="${error}" class="alert alert-error">
+            <p th:text="${error}"></p>
+        </div>
 
-    <form th:action="@{/login}" method="post" th:object="${usuario}">
-        <label for="correo">Correo electrónico:</label>
-        <input type="email" id="correo" name="correo" required>
+        <!-- Mensaje de registro exitoso -->
+        <div th:if="${param.registroExitoso}" class="alert alert-success">
+            ¡Registro exitoso! Por favor inicia sesión con tus credenciales.
+        </div>
 
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" required>
+        <form th:action="@{/login}" method="post" th:object="${usuario}">
+            <label for="correo">Correo electrónico:</label>
+            <input type="email" id="correo" name="correo" required>
 
-        <button type="submit">Iniciar sesión</button>
-        <button type="button" onclick="window.location.href='/tipoRegistro';">Registro</button>
-    </form>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" required>
 
-    <button id="mostrarFormularioRecuperacion" onclick="mostrarFormulario()">¿Olvidaste tu contraseña?</button>
+            <button type="submit">Iniciar sesión</button>
+        </form>
 
-    <!-- Formulario para solicitar recuperación de contraseña (oculto inicialmente) -->
-    <form id="formularioRecuperacion" th:action="@{/recuperarcontrasena}" method="post" style="display: none;">
-        <label for="correo">Ingresa tu correo electrónico para recuperar tu contraseña:</label>
-        <input type="email" id="correo" name="correo" required>
-        <button type="submit">Recuperar contraseña</button>
-    </form>
-</div>
+        <div class="divider">
+            <span>o</span>
+        </div>
 
-<div th:if="${param.registroExitoso}">
-    <div class="alert alert-success" role="alert">
-        ¡Registro exitoso! Por favor inicia sesión con tus credenciales.
+        <button type="button" class="register-btn" onclick="window.location.href='/tipoRegistro';">
+            Crear cuenta nueva
+        </button>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <button id="mostrarFormularioRecuperacion" onclick="mostrarFormulario()">
+                ¿Olvidaste tu contraseña?
+            </button>
+        </div>
+
+        <!-- Formulario para solicitar recuperación de contraseña (oculto inicialmente) -->
+        <div id="formularioRecuperacion">
+            <form th:action="@{/recuperarcontrasena}" method="post">
+                <label for="correoRecuperacion">Ingresa tu correo electrónico para recuperar tu contraseña:</label>
+                <input type="email" id="correoRecuperacion" name="correo" required>
+                <button type="submit">Recuperar contraseña</button>
+            </form>
+        </div>
     </div>
 </div>
 
 <script src="../static/formularioRecuperacion.js"></script>
 <script>
+    function mostrarFormulario() {
+        var formulario = document.getElementById('formularioRecuperacion');
+        var boton = document.getElementById('mostrarFormularioRecuperacion');
+
+        if (formulario.style.display === 'none' || formulario.style.display === '') {
+            formulario.style.display = 'block';
+            formulario.classList.add('show');
+            boton.textContent = 'Ocultar formulario';
+        } else {
+            formulario.style.display = 'none';
+            formulario.classList.remove('show');
+            boton.textContent = '¿Olvidaste tu contraseña?';
+        }
+    }
+
     window.addEventListener('mouseover', initLandbot, { once: true });
     window.addEventListener('touchstart', initLandbot, { once: true });
     var myLandbot;
